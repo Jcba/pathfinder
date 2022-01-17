@@ -35,4 +35,10 @@ public class Graph {
         }
         return new Edge[0];
     }
+
+    public Node getRandomNode() {
+        Random r = new Random();
+        List<Node> nodeList = new ArrayList<>(adjacencyListMap.keySet());
+        return nodeList.get(r.nextInt(nodeList.size()));
+    }
 }

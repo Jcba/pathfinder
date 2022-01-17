@@ -10,4 +10,11 @@ public class Node {
     public Point getCoordinate() {
         return coordinate;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "point: " + coordinate +
+                '}';
+    }
 }

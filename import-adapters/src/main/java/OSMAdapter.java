@@ -10,14 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 import static java.nio.file.StandardOpenOption.READ;
 
 public class OSMAdapter extends Graph {
+    Map<Long, Node> nodeMap = new HashMap<>();
 
     public OSMAdapter(Path input) throws IOException {
         InputStream pathInputStream = Files.newInputStream(input, READ);
@@ -27,8 +25,6 @@ public class OSMAdapter extends Graph {
     }
 
     public class OSMWaysParser extends BinaryParser {
-        int counter = 0;
-        Map<Long, Point> nodeMap = new HashMap<>();
 
         @Override
         protected void parseRelations(List<Osmformat.Relation> list) {
@@ -37,19 +33,19 @@ public class OSMAdapter extends Graph {
 
         @Override
         protected void parseDense(Osmformat.DenseNodes denseNodes) {
-            int idNr = 0;
-            for (int i = 0; i < denseNodes.getKeysValsList().size(); i++) {
-                int kv = denseNodes.getKeysValsList().get(i);
-                if (kv == 0) {
-                    // delimiter, do nothing
-                    idNr += 1;
-                } else {
-                    i += 1;
-                    int valueInt = denseNodes.getKeysValsList().get(i);
-                    String key = getStringById(kv);
-                    String value = getStringById(valueInt);
-                    nodeMap.put(denseNodes.getId(idNr), new Point(denseNodes.getLat(idNr), denseNodes.getLon(idNr)));
+            long prevId = 0;
+            double prevLat = 0;
+            double prevLon = 0;
+            for (int i = 0; i < denseNodes.getIdList().size(); i++) {
+                long id = denseNodes.getId(i) + prevId;
+                double lat = parseLat(denseNodes.getLat(i)) + prevLat;
+                double lon = parseLon(denseNodes.getLon(i)) + prevLon;
+                if (!nodeMap.containsKey(id)) {
+                    nodeMap.put(id, new Node(new Point(lat, lon)));
                 }
+                prevId = id;
+                prevLat = lat;
+                prevLon = lon;
             }
         }
 
@@ -67,11 +63,17 @@ public class OSMAdapter extends Graph {
                         System.out.println("way: " + getStringById(way.getVals(i)));
 
                         List<Long> refsList = way.getRefsList();
-                        List<Point> points = refsList.stream().map(nodeMap::get).collect(Collectors.toList());
+                        List<Node> points = new ArrayList<>();
+                        long prevNodeReference = 0;
+                        for (long ref : refsList) {
+                            Node node = nodeMap.get(ref + prevNodeReference);
+                            points.add(node);
+                            prevNodeReference = ref + prevNodeReference;
+                        }
 
                         if (!refsList.isEmpty() && points.size() >= 2) {
-                            Node from = new Node(new Point(0.0, 0.0));
-                            Node to = new Node(new Point(0.0, 0.0));
+                            Node from = points.get(0);
+                            Node to = points.get(points.size() - 1);
                             Edge edge = new Edge(from, to, 0.0);
                             addEdge(edge);
                         }
