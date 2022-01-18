@@ -58,10 +58,8 @@ public class OSMAdapter extends Graph {
         protected void parseWays(List<Osmformat.Way> list) {
             for (Osmformat.Way way : list) {
                 List<Integer> keys = way.getKeysList();
-                for (int i = 0; i < keys.size(); i++) {
-                    if (getStringById(keys.get(i)).equals("highway")) {
-                        System.out.println("way: " + getStringById(way.getVals(i)));
-
+                for (Integer key : keys) {
+                    if (getStringById(key).equals("highway")) {
                         List<Long> refsList = way.getRefsList();
                         List<Node> points = new ArrayList<>();
                         long prevNodeReference = 0;
@@ -72,10 +70,12 @@ public class OSMAdapter extends Graph {
                         }
 
                         if (!refsList.isEmpty() && points.size() >= 2) {
-                            Node from = points.get(0);
-                            Node to = points.get(points.size() - 1);
-                            Edge edge = new Edge(from, to, 0.0);
-                            addEdge(edge);
+                            for (int p = 0; p < points.size() - 1; p++) {
+                                Node from = points.get(p);
+                                Node to = points.get(p + 1);
+                                Edge edge = new Edge(from, to, from.getCoordinate().distance(to.getCoordinate()));
+                                addEdge(edge);
+                            }
                         }
                     }
                 }
@@ -88,7 +88,12 @@ public class OSMAdapter extends Graph {
 
         @Override
         public void complete() {
-            //do nothing
+            System.out.printf("""
+                    ------------------------------------
+                    Completed loading OSM PBF
+                    Loaded %s nodes
+                    ------------------------------------
+                    %n""", nodeMap.size());
         }
     }
 }

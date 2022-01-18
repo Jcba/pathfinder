@@ -20,9 +20,9 @@ class OSMAdapterTest {
         URL resource = getClass().getClassLoader().getResource("flevoland-latest.osm.pbf");
         if (null != resource) {
             Path flevoland = Path.of(resource.toURI());
-            OSMAdapter adapter = new OSMAdapter(flevoland);
-            PathSearchAlgorithm search = new AStarPathSearch(adapter);
-            Route route = search.route(adapter.getRandomNode(), adapter.getRandomNode());
+            OSMAdapter osmGraph = new OSMAdapter(flevoland);
+            PathSearchAlgorithm search = new AStarPathSearch(osmGraph);
+            Route route = search.route(osmGraph.getRandomNode(), osmGraph.getRandomNode());
 
             System.out.println(route.getNodesOnRoute());
         }

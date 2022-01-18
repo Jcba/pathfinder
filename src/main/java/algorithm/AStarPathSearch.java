@@ -29,7 +29,7 @@ public class AStarPathSearch implements PathSearchAlgorithm {
             Node current = openSet.remove();
 
             if (current == destination) {
-                return reconstructPath(cameFrom, current);
+                return reconstructPath(cameFrom, destination);
             }
 
             openSet.remove(current);
@@ -40,12 +40,12 @@ public class AStarPathSearch implements PathSearchAlgorithm {
                 if(!gScore.containsKey(neighbor)) {
                     cameFrom.put(neighbor, current);
                 }
-                if (tentativeGScore <= gScore.getOrDefault(neighbor, 0.0)) {
+                if (tentativeGScore < gScore.getOrDefault(neighbor, 0.0)) {
                     // this path to neighbor is better than any previous one.
                     cameFrom.put(neighbor, current);
                 }
                 gScore.put(neighbor, tentativeGScore);
-                fScore.put(neighbor, tentativeGScore + heuristic(current, neighbor));
+                fScore.put(neighbor, tentativeGScore + heuristic(neighbor, destination));
 
                 if (!openSet.contains(neighbor)) {
                     openSet.add(neighbor);
@@ -58,6 +58,7 @@ public class AStarPathSearch implements PathSearchAlgorithm {
     }
 
     private Route reconstructPath(Map<Node, Node> cameFrom, Node current) {
+        System.out.printf("solution found from %s%n\n", current);
         Route result = new Route();
         Node next = current;
         while (cameFrom.containsKey(next)) {
