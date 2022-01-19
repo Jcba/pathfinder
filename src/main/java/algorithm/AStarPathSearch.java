@@ -25,11 +25,14 @@ public class AStarPathSearch implements PathSearchAlgorithm {
         PriorityQueue<Node> openSet = new PriorityQueue<>(Comparator.comparingDouble(fScore::get));
         openSet.add(start);
 
+        gScore.put(start, 0.0);
+        fScore.put(start, heuristic(start, destination));
+
         while (!openSet.isEmpty()) {
             Node current = openSet.remove();
 
             if (current == destination) {
-                return reconstructPath(cameFrom, destination);
+                return reconstructPath(cameFrom, current);
             }
 
             openSet.remove(current);
@@ -37,18 +40,15 @@ public class AStarPathSearch implements PathSearchAlgorithm {
             for (Edge connection : graph.getConnections(current)) {
                 double tentativeGScore = gScore.getOrDefault(current, 0.0) + connection.getCost();
                 Node neighbor = connection.getTo();
-                if(!gScore.containsKey(neighbor)) {
-                    cameFrom.put(neighbor, current);
-                }
-                if (tentativeGScore < gScore.getOrDefault(neighbor, 0.0)) {
+                if (tentativeGScore < gScore.getOrDefault(neighbor, Double.MAX_VALUE)) {
                     // this path to neighbor is better than any previous one.
                     cameFrom.put(neighbor, current);
-                }
-                gScore.put(neighbor, tentativeGScore);
-                fScore.put(neighbor, tentativeGScore + heuristic(neighbor, destination));
+                    gScore.put(neighbor, tentativeGScore);
+                    fScore.put(neighbor, tentativeGScore + heuristic(neighbor, destination));
 
-                if (!openSet.contains(neighbor)) {
-                    openSet.add(neighbor);
+                    if (!openSet.contains(neighbor)) {
+                        openSet.add(neighbor);
+                    }
                 }
             }
         }

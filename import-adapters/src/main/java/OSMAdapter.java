@@ -26,6 +26,8 @@ public class OSMAdapter extends Graph {
 
     public class OSMWaysParser extends BinaryParser {
 
+        private long loadedWays = 0;
+
         @Override
         protected void parseRelations(List<Osmformat.Relation> list) {
             //do nothing
@@ -58,8 +60,8 @@ public class OSMAdapter extends Graph {
         protected void parseWays(List<Osmformat.Way> list) {
             for (Osmformat.Way way : list) {
                 List<Integer> keys = way.getKeysList();
-                for (Integer key : keys) {
-                    if (getStringById(key).equals("highway")) {
+                for (int i = 0; i < keys.size(); i++) {
+                    if (getStringById(keys.get(i)).equals("highway") && shouldParseHighWayType(getStringById(way.getVals(i)))) {
                         List<Long> refsList = way.getRefsList();
                         List<Node> points = new ArrayList<>();
                         long prevNodeReference = 0;
@@ -75,11 +77,26 @@ public class OSMAdapter extends Graph {
                                 Node to = points.get(p + 1);
                                 Edge edge = new Edge(from, to, from.getCoordinate().distance(to.getCoordinate()));
                                 addEdge(edge);
+                                loadedWays++;
                             }
                         }
                     }
                 }
             }
+        }
+
+        private boolean shouldParseHighWayType(String highwayType) {
+            return highwayType.equals("motorway") ||
+                    highwayType.equals("trunk") ||
+                    highwayType.equals("primary") ||
+                    highwayType.equals("secondary") ||
+                    highwayType.equals("tertiary") ||
+                    highwayType.equals("motorway_link") ||
+                    highwayType.equals("trunk_link") ||
+                    highwayType.equals("primary_link") ||
+                    highwayType.equals("secondary_link") ||
+                    highwayType.equals("tertiary_link");
+
         }
 
         @Override
@@ -92,8 +109,9 @@ public class OSMAdapter extends Graph {
                     ------------------------------------
                     Completed loading OSM PBF
                     Loaded %s nodes
+                    Loaded %s edges
                     ------------------------------------
-                    %n""", nodeMap.size());
+                    %n""", nodeMap.size(), loadedWays);
         }
     }
 }
