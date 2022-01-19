@@ -91,12 +91,13 @@ public class OSMAdapter extends Graph {
                     highwayType.equals("primary") ||
                     highwayType.equals("secondary") ||
                     highwayType.equals("tertiary") ||
+                    highwayType.equals("unclassified") ||
+                    highwayType.equals("residential") ||
                     highwayType.equals("motorway_link") ||
                     highwayType.equals("trunk_link") ||
                     highwayType.equals("primary_link") ||
                     highwayType.equals("secondary_link") ||
                     highwayType.equals("tertiary_link");
-
         }
 
         @Override
