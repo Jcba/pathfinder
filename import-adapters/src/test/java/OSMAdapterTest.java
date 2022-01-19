@@ -1,5 +1,6 @@
 import algorithm.AStarPathSearch;
 import api.PathSearchAlgorithm;
+import model.Node;
 import model.Route;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.stream.Collectors;
 
 class OSMAdapterTest {
 
@@ -24,7 +26,7 @@ class OSMAdapterTest {
             PathSearchAlgorithm search = new AStarPathSearch(osmGraph);
             Route route = search.route(osmGraph.getRandomNode(), osmGraph.getRandomNode());
 
-            System.out.println(route.getNodesOnRoute());
+            System.out.println(GeoJSON.asGeojson(route.getNodesOnRoute().stream().map(Node::getCoordinate).collect(Collectors.toList())));
         }
     }
 }
