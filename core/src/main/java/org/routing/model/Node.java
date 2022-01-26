@@ -1,4 +1,4 @@
-package model;
+package org.routing.model;
 
 public class Node {
     private final Point coordinate;

@@ -1,7 +1,9 @@
-import algorithm.AStarPathSearch;
-import api.PathSearchAlgorithm;
-import model.Node;
-import model.Route;
+package org.routing.adapter;
+
+import org.routing.algorithm.AStarPathSearch;
+import org.routing.api.PathSearchAlgorithm;
+import org.routing.model.Node;
+import org.routing.model.Route;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +28,7 @@ class OSMAdapterTest {
             PathSearchAlgorithm search = new AStarPathSearch(osmGraph);
             Route route = search.route(osmGraph.getRandomNode(), osmGraph.getRandomNode());
 
-            System.out.println(GeoJSON.asGeojson(route.getNodesOnRoute().stream().map(Node::getCoordinate).collect(Collectors.toList())));
+            System.out.println(GeoJSON.asLineString(route.getNodesOnRoute().stream().map(Node::getCoordinate).collect(Collectors.toList())));
         }
     }
 }

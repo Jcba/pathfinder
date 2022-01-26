@@ -1,10 +1,12 @@
-import model.Point;
+package org.routing.adapter;
+
+import org.routing.model.Point;
 
 import java.util.List;
 
 public class GeoJSON {
 
-    public static String asGeojson(List<Point> collect) {
+    public static String asLineString(List<Point> collect) {
         StringBuilder builder = new StringBuilder();
         builder.append("""
                 {

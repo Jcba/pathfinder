@@ -1,4 +1,4 @@
-package model;
+package org.routing.model;
 
 import java.util.*;
 

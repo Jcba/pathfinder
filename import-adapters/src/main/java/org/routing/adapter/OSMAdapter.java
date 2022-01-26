@@ -1,10 +1,12 @@
+package org.routing.adapter;
+
 import crosby.binary.BinaryParser;
 import crosby.binary.Osmformat;
 import crosby.binary.file.BlockInputStream;
-import model.Edge;
-import model.Graph;
-import model.Node;
-import model.Point;
+import org.routing.model.Edge;
+import org.routing.model.Graph;
+import org.routing.model.Node;
+import org.routing.model.Point;
 
 import java.io.IOException;
 import java.io.InputStream;

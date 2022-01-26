@@ -1,7 +1,7 @@
-package algorithm;
+package org.routing.algorithm;
 
-import api.PathSearchAlgorithm;
-import model.*;
+import org.routing.api.PathSearchAlgorithm;
+import org.routing.model.*;
 
 import java.util.Comparator;
 import java.util.HashMap;

@@ -10,6 +10,8 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>import-adapters</module>
+        <module>core</module>
+        <module>web</module>
     </modules>
     <dependencies>
         <dependency>

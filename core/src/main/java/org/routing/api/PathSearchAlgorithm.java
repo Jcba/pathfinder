@@ -1,7 +1,7 @@
-package api;
+package org.routing.api;
 
-import model.Node;
-import model.Route;
+import org.routing.model.Node;
+import org.routing.model.Route;
 
 public interface PathSearchAlgorithm {
 
