@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.stream.Collectors;
 
 @Singleton
 public class RoutingConfiguration {
@@ -47,6 +46,6 @@ public class RoutingConfiguration {
         Node start = graph.getRandomNode();
         Node destination = graph.getRandomNode();
         Route route = search.route(start, destination);
-        return GeoJSON.asLineString(route.getNodesOnRoute().stream().map(Node::getCoordinate).collect(Collectors.toList()));
+        return GeoJSON.asLineString(route.getNodesOnRoute().stream().map(Node::getCoordinate).toList());
     }
 }

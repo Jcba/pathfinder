@@ -2,6 +2,8 @@ package org.routing.algorithm;
 
 import org.routing.api.PathSearchAlgorithm;
 import org.routing.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -9,6 +11,8 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 public class AStarPathSearch implements PathSearchAlgorithm {
+
+    private static final Logger log = LoggerFactory.getLogger(AStarPathSearch.class);
 
     private final Graph graph;
 
@@ -53,12 +57,12 @@ public class AStarPathSearch implements PathSearchAlgorithm {
             }
         }
 
-        // no solution found!
+        log.error("No solution found for route from {} to {}", start, destination);
         return null;
     }
 
     private Route reconstructPath(Map<Node, Node> cameFrom, Node current) {
-        System.out.printf("solution found from %s%n\n", current);
+        log.info("Solution found from {}", current);
         Route result = new Route();
         Node next = current;
         while (cameFrom.containsKey(next)) {
