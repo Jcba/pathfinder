@@ -1,6 +1,8 @@
 package org.routing.model;
 
-public class Node {
+import java.io.Serializable;
+
+public class Node implements Serializable {
     private final Point coordinate;
 
     public Node(Point coordinate) {

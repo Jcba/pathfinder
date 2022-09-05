@@ -1,4 +1,4 @@
-package org.routing.api;
+package org.routing.search;
 
 import org.routing.model.Node;
 import org.routing.model.Route;

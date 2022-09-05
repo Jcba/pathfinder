@@ -1,6 +1,8 @@
 package org.routing.model;
 
-public class Edge {
+import java.io.Serializable;
+
+public class Edge implements Serializable {
     private Node from;
     private Node to;
     private double cost;

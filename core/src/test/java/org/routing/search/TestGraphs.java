@@ -1,4 +1,4 @@
-package org.routing.algorithm;
+package org.routing.search;
 
 import org.routing.model.Edge;
 import org.routing.model.Graph;

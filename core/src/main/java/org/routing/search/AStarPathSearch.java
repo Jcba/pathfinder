@@ -1,6 +1,5 @@
-package org.routing.algorithm;
+package org.routing.search;
 
-import org.routing.api.PathSearchAlgorithm;
 import org.routing.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

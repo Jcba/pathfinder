@@ -1,17 +1,26 @@
 package org.routing.model;
 
-import java.util.*;
+import org.mapdb.DB;
+import org.mapdb.DBMaker;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ConcurrentMap;
 
 public class Graph {
 
-    private final Map<Node, Edge[]> adjacencyListMap;
+    private final ConcurrentMap<Node, Edge[]> adjacencyListMap;
 
-    public Graph(Map<Node, Edge[]> adjacencyListMap) {
+    public Graph(ConcurrentMap<Node, Edge[]> adjacencyListMap) {
         this.adjacencyListMap = adjacencyListMap;
     }
 
     public Graph() {
-        adjacencyListMap = new HashMap<>();
+        DB db = DBMaker.memoryDB().make();
+        adjacencyListMap = (ConcurrentMap<Node, Edge[]>) db
+                .hashMap("map")
+                .createOrOpen();
     }
 
     public void addEdge(Edge edge) {
@@ -39,6 +48,6 @@ public class Graph {
     public Node getRandomNode() {
         Random r = new Random();
         List<Node> nodeList = new ArrayList<>(adjacencyListMap.keySet());
-        return nodeList.get(r.nextInt(nodeList.size()/10));
+        return nodeList.get(r.nextInt(nodeList.size() / 10));
     }
 }

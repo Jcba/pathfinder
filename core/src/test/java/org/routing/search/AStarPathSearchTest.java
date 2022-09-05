@@ -1,14 +1,17 @@
-package org.routing.algorithm;
+package org.routing.search;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.routing.model.*;
+import org.routing.model.Graph;
+import org.routing.model.Node;
+import org.routing.model.Point;
+import org.routing.model.Route;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.routing.algorithm.TestGraphs.createConnectedGraphWithDepth3;
+import static org.routing.search.TestGraphs.createConnectedGraphWithDepth3;
 
 class AStarPathSearchTest {
 
@@ -16,7 +19,7 @@ class AStarPathSearchTest {
 
     @BeforeEach
     void setUp() {
-        Graph graph = new Graph(new HashMap<>());
+        Graph graph = new Graph(new ConcurrentHashMap<>());
 
         fixture = new AStarPathSearch(graph);
     }
@@ -45,6 +48,6 @@ class AStarPathSearchTest {
         List<Node> nodesOnRoute = route.getNodesOnRoute();
 
         assertThat(nodesOnRoute.get(0)).isEqualTo(destination);
-        assertThat(nodesOnRoute.get(nodesOnRoute.size()-1)).isEqualTo(start);
+        assertThat(nodesOnRoute.get(nodesOnRoute.size() - 1)).isEqualTo(start);
     }
 }

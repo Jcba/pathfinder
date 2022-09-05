@@ -1,7 +1,7 @@
 package org.routing.adapter;
 
-import org.routing.algorithm.AStarPathSearch;
-import org.routing.api.PathSearchAlgorithm;
+import org.routing.search.AStarPathSearch;
+import org.routing.search.PathSearchAlgorithm;
 import org.routing.model.Node;
 import org.routing.model.Route;
 import org.junit.jupiter.api.BeforeEach;
