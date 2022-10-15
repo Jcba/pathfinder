@@ -34,7 +34,7 @@ public class AStarPathSearch implements PathSearchAlgorithm {
         while (!openSet.isEmpty()) {
             Node current = openSet.remove();
 
-            if (current == destination) {
+            if (current.equals(destination)) {
                 return reconstructPath(cameFrom, current);
             }
 
