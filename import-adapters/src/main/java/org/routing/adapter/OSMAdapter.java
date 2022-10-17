@@ -3,6 +3,7 @@ package org.routing.adapter;
 import crosby.binary.BinaryParser;
 import crosby.binary.Osmformat;
 import crosby.binary.file.BlockInputStream;
+import org.routing.geometries.LineString;
 import org.routing.model.Edge;
 import org.routing.model.Graph;
 import org.routing.model.Node;
@@ -18,6 +19,7 @@ import static java.nio.file.StandardOpenOption.READ;
 
 public class OSMAdapter extends Graph {
     Map<Long, Node> nodeMap = new HashMap<>();
+    Map<Edge, LineString> edgeGeometryMap = new HashMap<>();
 
     public OSMAdapter(Path input) throws IOException {
         InputStream pathInputStream = Files.newInputStream(input, READ);
@@ -63,7 +65,7 @@ public class OSMAdapter extends Graph {
             for (Osmformat.Way way : list) {
                 List<Integer> keys = way.getKeysList();
                 for (int i = 0; i < keys.size(); i++) {
-                    if (getStringById(keys.get(i)).equals("highway") && shouldParseHighWayType(getStringById(way.getVals(i)))) {
+                    if (shouldParseWayType(getStringById(keys.get(i))) && shouldParseHighWayType(getStringById(way.getVals(i)))) {
                         List<Long> refsList = way.getRefsList();
                         List<Node> points = new ArrayList<>();
                         long prevNodeReference = 0;
@@ -85,6 +87,10 @@ public class OSMAdapter extends Graph {
                     }
                 }
             }
+        }
+
+        private boolean shouldParseWayType(String wayType) {
+            return wayType.equals("highway");
         }
 
         private boolean shouldParseHighWayType(String highwayType) {

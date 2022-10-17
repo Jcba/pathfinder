@@ -12,6 +12,7 @@
         <module>import-adapters</module>
         <module>core</module>
         <module>web</module>
+        <module>simpleGeometries</module>
     </modules>
     <dependencies>
         <dependency>
