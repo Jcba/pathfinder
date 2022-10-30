@@ -1,7 +1,5 @@
 package org.routing.adapter;
 
-import org.routing.model.Point;
-
 import java.util.List;
 
 public class GeoJSON {

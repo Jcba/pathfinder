@@ -1,5 +1,7 @@
 package org.routing.model;
 
+import org.routing.geometries.Point;
+
 import java.io.Serializable;
 
 public class Node implements Serializable {

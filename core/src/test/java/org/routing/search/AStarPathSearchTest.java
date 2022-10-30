@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.routing.model.Graph;
 import org.routing.model.Node;
-import org.routing.model.Point;
 import org.routing.model.Route;
 
 import java.util.List;

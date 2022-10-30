@@ -7,7 +7,6 @@ import org.routing.geometries.LineString;
 import org.routing.model.Edge;
 import org.routing.model.Graph;
 import org.routing.model.Node;
-import org.routing.model.Point;
 
 import java.io.IOException;
 import java.io.InputStream;
