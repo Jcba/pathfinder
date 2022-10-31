@@ -74,12 +74,12 @@ public class AStarPathSearch implements PathSearchAlgorithm {
     }
 
     private double heuristic(Node a, Node b) {
-        if (null == a || null == b || null == a.coordinate() || null == b.coordinate()) {
+        if (null == a || null == b || null == a.getCoordinate() || null == b.getCoordinate()) {
             // log error
             return 0.0;
         }
-        Point pointA = a.coordinate();
-        Point pointB = b.coordinate();
+        Point pointA = a.getCoordinate();
+        Point pointB = b.getCoordinate();
         return pointA.distance(pointB);
     }
 }

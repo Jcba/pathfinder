@@ -44,6 +44,16 @@ public class FileGraph implements Graph {
     }
 
     @Override
+    public void removeEdge(Edge edge) {
+
+    }
+
+    @Override
+    public void removeNode(Node node) {
+        this.adjacencyListMap.remove(node);
+    }
+
+    @Override
     public Edge[] getConnections(Node node) {
         if (adjacencyListMap.containsKey(node)) {
             return adjacencyListMap.get(node);
@@ -54,7 +64,7 @@ public class FileGraph implements Graph {
     @NotNull
     @Override
     public Iterator<Node> iterator() {
-        return null;
+        return this.adjacencyListMap.keySet().iterator();
     }
 
     @Override

@@ -38,6 +38,16 @@ public class MemoryGraph implements Graph {
         adjacencyListMap.put(from, value);
     }
 
+    @Override
+    public void removeEdge(Edge edge) {
+        // not needed because it will automatically be garbage-collected
+    }
+
+    @Override
+    public void removeNode(Node node) {
+        this.adjacencyListMap.remove(node);
+    }
+
     public Edge[] getConnections(Node node) {
         if (adjacencyListMap.containsKey(node)) {
             return adjacencyListMap.get(node);
@@ -54,7 +64,7 @@ public class MemoryGraph implements Graph {
     @NotNull
     @Override
     public Iterator<Node> iterator() {
-        return null;
+        return this.adjacencyListMap.keySet().iterator();
     }
 
     @Override

@@ -7,7 +7,21 @@ import java.io.Serializable;
 /**
  * @param coordinate not really needed for routing -- remove in feature
  */
-public record Node(Point coordinate) implements Serializable {
+public class Node implements Serializable {
+
+    public Node(Point coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    private Point coordinate;
+
+    public Point getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(Point coordinate) {
+        this.coordinate = coordinate;
+    }
 
     @Override
     public String toString() {
@@ -23,11 +37,17 @@ public record Node(Point coordinate) implements Serializable {
 
         Node node = (Node) o;
 
-        return coordinate() != null ? coordinate().equals(node.coordinate()) : node.coordinate() == null;
+        return getCoordinate() != null ? getCoordinate().equals(node.getCoordinate()) : node.getCoordinate() == null;
     }
 
     @Override
     public int hashCode() {
-        return coordinate() != null ? coordinate().hashCode() : 0;
+        if (getCoordinate() == null) {
+            return 0;
+        }
+        float lat = getCoordinate().getLat();
+        float lon = getCoordinate().getLon();
+
+        return (((int) (lat * 6)) << 8) + ((int) lon * 6);
     }
 }
