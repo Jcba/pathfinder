@@ -5,7 +5,7 @@ import org.routing.adapter.GeoJSON;
 import org.routing.adapter.OSMAdapter;
 import org.routing.search.AStarPathSearch;
 import org.routing.search.PathSearchAlgorithm;
-import org.routing.model.Graph;
+import org.routing.model.MemoryGraph;
 import org.routing.model.Node;
 import org.routing.model.Route;
 
@@ -19,17 +19,17 @@ import java.nio.file.Path;
 public class RoutingConfiguration {
 
     private final PathSearchAlgorithm search;
-    private final Graph graph;
+    private final MemoryGraph memoryGraph;
 
     @ConfigProperty(name = "network.name")
     String network;
 
     public RoutingConfiguration() throws IOException, URISyntaxException {
-        graph = loadGraph();
-        search = getPathSearchAlgorithm(graph);
+        memoryGraph = loadGraph();
+        search = getPathSearchAlgorithm(memoryGraph);
     }
 
-    public Graph loadGraph() throws IOException, URISyntaxException {
+    public MemoryGraph loadGraph() throws IOException, URISyntaxException {
         URL resource = getClass().getClassLoader().getResource("flevoland-latest.osm.pbf");
         if (null != resource) {
             Path networkPath = Path.of(resource.toURI());
@@ -38,14 +38,14 @@ public class RoutingConfiguration {
         return null;
     }
 
-    public PathSearchAlgorithm getPathSearchAlgorithm(Graph graph) {
-        return new AStarPathSearch(graph);
+    public PathSearchAlgorithm getPathSearchAlgorithm(MemoryGraph memoryGraph) {
+        return new AStarPathSearch(memoryGraph);
     }
 
     public String getRoute() {
-        Node start = graph.getRandomNode();
-        Node destination = graph.getRandomNode();
+        Node start = memoryGraph.getRandomNode();
+        Node destination = memoryGraph.getRandomNode();
         Route route = search.route(start, destination);
-        return GeoJSON.asLineString(route.getNodesOnRoute().stream().map(Node::getCoordinate).toList());
+        return GeoJSON.asLineString(route.getNodesOnRoute().stream().map(Node::coordinate).toList());
     }
 }

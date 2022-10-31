@@ -1,11 +1,15 @@
 package org.routing.model;
 
+import org.routing.geometries.LineString;
+
 import java.io.Serializable;
 
 public class Edge implements Serializable {
     private Node from;
     private Node to;
     private double cost;
+
+    private LineString geometry;
 
     public Edge(Node from, Node to, double cost) {
         this.from = from;

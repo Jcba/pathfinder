@@ -5,7 +5,7 @@ import crosby.binary.Osmformat;
 import crosby.binary.file.BlockInputStream;
 import org.routing.geometries.LineString;
 import org.routing.model.Edge;
-import org.routing.model.Graph;
+import org.routing.model.MemoryGraph;
 import org.routing.model.Node;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.*;
 
 import static java.nio.file.StandardOpenOption.READ;
 
-public class OSMAdapter extends Graph {
+public class OSMAdapter extends MemoryGraph {
     Map<Long, Node> nodeMap = new HashMap<>();
     Map<Edge, LineString> edgeGeometryMap = new HashMap<>();
 
@@ -78,7 +78,7 @@ public class OSMAdapter extends Graph {
                             for (int p = 0; p < points.size() - 1; p++) {
                                 Node from = points.get(p);
                                 Node to = points.get(p + 1);
-                                Edge edge = new Edge(from, to, from.getCoordinate().distance(to.getCoordinate()));
+                                Edge edge = new Edge(from, to, from.coordinate().distance(to.coordinate()));
                                 addEdge(edge);
                                 loadedWays++;
                             }

@@ -1,3 +1,7 @@
 package org.routing.geometries
 
-data class LineString(val geometry: List<Point>)
+class LineString(
+    val geometry: List<Point>
+    ) {
+
+}

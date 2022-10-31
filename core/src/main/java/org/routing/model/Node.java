@@ -4,16 +4,10 @@ import org.routing.geometries.Point;
 
 import java.io.Serializable;
 
-public class Node implements Serializable {
-    private final Point coordinate;
-
-    public Node(Point coordinate) {
-        this.coordinate = coordinate;
-    }
-
-    public Point getCoordinate() {
-        return coordinate;
-    }
+/**
+ * @param coordinate not really needed for routing -- remove in feature
+ */
+public record Node(Point coordinate) implements Serializable {
 
     @Override
     public String toString() {
@@ -29,11 +23,11 @@ public class Node implements Serializable {
 
         Node node = (Node) o;
 
-        return getCoordinate() != null ? getCoordinate().equals(node.getCoordinate()) : node.getCoordinate() == null;
+        return coordinate() != null ? coordinate().equals(node.coordinate()) : node.coordinate() == null;
     }
 
     @Override
     public int hashCode() {
-        return getCoordinate() != null ? getCoordinate().hashCode() : 0;
+        return coordinate() != null ? coordinate().hashCode() : 0;
     }
 }

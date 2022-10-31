@@ -2,7 +2,8 @@ package org.routing.search;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.routing.model.Graph;
+import org.routing.geometries.Point;
+import org.routing.model.MemoryGraph;
 import org.routing.model.Node;
 import org.routing.model.Route;
 
@@ -18,15 +19,15 @@ class AStarPathSearchTest {
 
     @BeforeEach
     void setUp() {
-        Graph graph = new Graph(new ConcurrentHashMap<>());
+        MemoryGraph memoryGraph = new MemoryGraph(new ConcurrentHashMap<>());
 
-        fixture = new AStarPathSearch(graph);
+        fixture = new AStarPathSearch(memoryGraph);
     }
 
     @Test
     void routeEmptyGraph_shouldReturnEmptyRoute() {
-        Node start = new Node(new Point(1.0, 1.0));
-        Node destination = new Node(new Point(2.0, 2.0));
+        Node start = new Node(new Point(1.0f, 1.0f));
+        Node destination = new Node(new Point(2.0f, 2.0f));
         Route route = fixture.route(start, destination);
 
         assertThat(route).isNull();
@@ -34,10 +35,10 @@ class AStarPathSearchTest {
 
     @Test
     void route_shouldVisitStartAndEndNode() {
-        Node start = new Node(new Point(0.0, 1.0));
-        Node destination = new Node(new Point(5.0, 5.0));
-        Graph graph = createConnectedGraphWithDepth3(start, destination);
-        AStarPathSearch search = new AStarPathSearch(graph);
+        Node start = new Node(new Point(0.0f, 1.0f));
+        Node destination = new Node(new Point(5.0f, 5.0f));
+        MemoryGraph memoryGraph = createConnectedGraphWithDepth3(start, destination);
+        AStarPathSearch search = new AStarPathSearch(memoryGraph);
 
         Route route = search.route(start, destination);
 

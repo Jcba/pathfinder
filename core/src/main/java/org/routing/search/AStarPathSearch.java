@@ -14,10 +14,10 @@ public class AStarPathSearch implements PathSearchAlgorithm {
 
     private static final Logger log = LoggerFactory.getLogger(AStarPathSearch.class);
 
-    private final Graph graph;
+    private final MemoryGraph memoryGraph;
 
-    public AStarPathSearch(Graph graph) {
-        this.graph = graph;
+    public AStarPathSearch(MemoryGraph memoryGraph) {
+        this.memoryGraph = memoryGraph;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class AStarPathSearch implements PathSearchAlgorithm {
 
             openSet.remove(current);
 
-            for (Edge connection : graph.getConnections(current)) {
+            for (Edge connection : memoryGraph.getConnections(current)) {
                 double tentativeGScore = gScore.getOrDefault(current, 0.0) + connection.getCost();
                 Node neighbor = connection.getTo();
                 if (tentativeGScore < gScore.getOrDefault(neighbor, Double.MAX_VALUE)) {
@@ -74,12 +74,12 @@ public class AStarPathSearch implements PathSearchAlgorithm {
     }
 
     private double heuristic(Node a, Node b) {
-        if (null == a || null == b || null == a.getCoordinate() || null == b.getCoordinate()) {
+        if (null == a || null == b || null == a.coordinate() || null == b.coordinate()) {
             // log error
             return 0.0;
         }
-        Point pointA = a.getCoordinate();
-        Point pointB = b.getCoordinate();
+        Point pointA = a.coordinate();
+        Point pointB = b.coordinate();
         return pointA.distance(pointB);
     }
 }

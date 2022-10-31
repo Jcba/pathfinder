@@ -8,7 +8,7 @@ import kotlin.math.sqrt
 /**
  * Simple WGS84 Geometry
  */
-class Point(
+class Point (
         private val lat: Float,
         private val lon: Float
 ) {

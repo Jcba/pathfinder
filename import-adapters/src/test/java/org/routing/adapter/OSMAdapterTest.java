@@ -28,7 +28,7 @@ class OSMAdapterTest {
             PathSearchAlgorithm search = new AStarPathSearch(osmGraph);
             Route route = search.route(osmGraph.getRandomNode(), osmGraph.getRandomNode());
 
-            System.out.println(GeoJSON.asLineString(route.getNodesOnRoute().stream().map(Node::getCoordinate).collect(Collectors.toList())));
+            System.out.println(GeoJSON.asLineString(route.getNodesOnRoute().stream().map(Node::coordinate).collect(Collectors.toList())));
         }
     }
 }
