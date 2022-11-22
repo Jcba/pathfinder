@@ -1,5 +1,6 @@
 package org.routing.web.controller;
 
+import org.routing.geometries.FeatureCollection;
 import org.routing.web.configuration.RoutingConfiguration;
 
 import javax.inject.Inject;
@@ -15,8 +16,8 @@ public class RoutingController {
     RoutingConfiguration routingConfiguration;
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public FeatureCollection hello() {
         return routingConfiguration.getRoute();
     }
 }

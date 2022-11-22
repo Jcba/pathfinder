@@ -1,17 +1,16 @@
 package org.routing.adapter;
 
-import org.routing.search.AStarPathSearch;
-import org.routing.search.PathSearchAlgorithm;
-import org.routing.model.Node;
-import org.routing.model.Route;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.routing.adapters.RouteToFeatureCollectionAdapter;
+import org.routing.model.Route;
+import org.routing.search.AStarPathSearch;
+import org.routing.search.PathSearchAlgorithm;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.stream.Collectors;
 
 class OSMAdapterTest {
 
@@ -28,7 +27,7 @@ class OSMAdapterTest {
             PathSearchAlgorithm search = new AStarPathSearch(osmGraph);
             Route route = search.route(osmGraph.getRandomNode(), osmGraph.getRandomNode());
 
-            System.out.println(GeoJSON.asLineString(route.getNodesOnRoute().stream().map(Node::coordinate).collect(Collectors.toList())));
+            System.out.println(new RouteToFeatureCollectionAdapter().apply(route));
         }
     }
 }

@@ -1,3 +1,3 @@
 package org.routing.geometries
 
-data class FeatureCollection (val features: List<Feature>)
+open class FeatureCollection (val features: List<Feature>)

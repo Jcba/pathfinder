@@ -105,7 +105,7 @@ public class OSMAdapter extends MemoryGraph {
                             for (int p = 0; p < points.size() - 1; p++) {
                                 Node from = points.get(p);
                                 Node to = points.get(p + 1);
-                                Edge edge = new Edge(from, to, from.coordinate().distance(to.coordinate()));
+                                Edge edge = new Edge(from, to, from.getCoordinate().distance(to.getCoordinate()));
                                 addEdge(edge);
                                 loadedWays++;
                             }

@@ -1,4 +1,4 @@
 package org.routing.geometries
 
-abstract class Geometry {
+interface Geometry {
 }

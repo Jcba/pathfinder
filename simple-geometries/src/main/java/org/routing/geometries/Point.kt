@@ -12,7 +12,7 @@ import kotlin.math.sqrt
 class Point(
     val lat: Float,
     val lon: Float
-) : Serializable {
+) : Serializable, Geometry{
 
     fun distance(other: Point): Float {
         val earthRadius = 6371000.0 //meters
