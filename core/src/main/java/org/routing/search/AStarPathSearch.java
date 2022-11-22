@@ -64,6 +64,7 @@ public class AStarPathSearch implements PathSearchAlgorithm {
     private Route reconstructPath(Map<Node, Node> cameFrom, Node current) {
         log.info("Solution found from {}", current);
         Route result = new Route();
+        result.setGraph(memoryGraph);
         Node next = current;
         while (cameFrom.containsKey(next)) {
             result.addNodeOnRoute(next);

@@ -8,6 +8,8 @@ public class Route {
 
     private List<Node> nodesOnRoute;
 
+    private Graph graph;
+
     public double getDistance() {
         return distance;
     }
@@ -26,4 +28,13 @@ public class Route {
         }
         this.nodesOnRoute.add(point);
     }
+
+    public Graph getGraph() {
+        return graph;
+    }
+
+    public void setGraph(Graph graph) {
+        this.graph = graph;
+    }
+
 }

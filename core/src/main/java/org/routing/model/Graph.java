@@ -9,4 +9,6 @@ public interface Graph extends Iterable<Node> {
     void removeNode(Node node);
 
     Edge[] getConnections(Node node);
+
+    Edge getConnection(Node from, Node to);
 }

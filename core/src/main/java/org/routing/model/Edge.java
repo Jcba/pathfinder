@@ -17,6 +17,13 @@ public class Edge implements Serializable {
         this.cost = cost;
     }
 
+    public Edge(Node from, Node to, double cost, LineString geometry) {
+        this.from = from;
+        this.to = to;
+        this.cost = cost;
+        this.geometry = geometry;
+    }
+
     public Node getFrom() {
         return from;
     }
@@ -62,5 +69,9 @@ public class Edge implements Serializable {
         temp = Double.doubleToLongBits(getCost());
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    public LineString getGeometry() {
+        return geometry;
     }
 }

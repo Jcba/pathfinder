@@ -3,6 +3,7 @@ package org.routing.adapter;
 import crosby.binary.BinaryParser;
 import crosby.binary.Osmformat;
 import crosby.binary.file.BlockInputStream;
+import org.routing.geometries.LineString;
 import org.routing.geometries.Point;
 import org.routing.model.Edge;
 import org.routing.model.MemoryGraph;
@@ -20,38 +21,13 @@ import java.util.Map;
 import static java.nio.file.StandardOpenOption.READ;
 
 public class OSMAdapter extends MemoryGraph {
-    Map<Long, Node> nodeMap = new HashMap<>();
+    Map<Long, Point> nodeMap = new HashMap<>();
 
     public OSMAdapter(Path input) throws IOException {
         InputStream pathInputStream = Files.newInputStream(input, READ);
         try (BlockInputStream blockInputStream = new BlockInputStream(pathInputStream, new OSMWaysParser())) {
             blockInputStream.process();
         }
-        createRoutableGraph();
-    }
-
-    public void createRoutableGraph() {
-        for (Node node : this) {
-            Edge[] connections = getConnections(node);
-
-            if (connections.length == 0) {
-                removeNode(node);
-            }
-
-            if (connections.length == 1) {
-                Edge connection = connections[0];
-
-                addToEdgeGeometry(connection.getFrom(), connection.getTo());
-
-                // node had only one edge connection, so can be removed
-                removeNode(node);
-                removeEdge(connection);
-            }
-        }
-    }
-
-    private void addToEdgeGeometry(Node from, Node to) {
-
     }
 
     public class OSMWaysParser extends BinaryParser {
@@ -73,7 +49,7 @@ public class OSMAdapter extends MemoryGraph {
                 float lat = (float) (parseLat(denseNodes.getLat(i)) + prevLat);
                 float lon = (float) (parseLon(denseNodes.getLon(i)) + prevLon);
                 if (!nodeMap.containsKey(id)) {
-                    nodeMap.put(id, new Node(new Point(lat, lon)));
+                    nodeMap.put(id, new Point(lat, lon));
                 }
                 prevId = id;
                 prevLat = lat;
@@ -93,22 +69,22 @@ public class OSMAdapter extends MemoryGraph {
                 for (int i = 0; i < keys.size(); i++) {
                     if (shouldParseWayType(getStringById(keys.get(i))) && shouldParseHighWayType(getStringById(way.getVals(i)))) {
                         List<Long> refsList = way.getRefsList();
-                        List<Node> points = new ArrayList<>();
+                        List<Point> points = new ArrayList<>();
                         long prevNodeReference = 0;
                         for (long ref : refsList) {
-                            Node node = nodeMap.get(ref + prevNodeReference);
+                            Point node = nodeMap.get(ref + prevNodeReference);
                             points.add(node);
                             prevNodeReference = ref + prevNodeReference;
                         }
 
                         if (!refsList.isEmpty() && points.size() >= 2) {
-                            for (int p = 0; p < points.size() - 1; p++) {
-                                Node from = points.get(p);
-                                Node to = points.get(p + 1);
-                                Edge edge = new Edge(from, to, from.getCoordinate().distance(to.getCoordinate()));
-                                addEdge(edge);
-                                loadedWays++;
-                            }
+                            LineString lineString = new LineString(points);
+
+                            Node from = new Node(points.get(0));
+                            Node to = new Node(points.get(points.size() - 1));
+                            Edge edge = new Edge(from, to, from.getCoordinate().distance(to.getCoordinate()), lineString);
+                            addEdge(edge);
+                            loadedWays++;
                         }
                     }
                 }

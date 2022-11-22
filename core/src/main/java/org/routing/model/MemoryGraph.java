@@ -1,8 +1,6 @@
 package org.routing.model;
 
 import org.jetbrains.annotations.NotNull;
-import org.mapdb.DB;
-import org.mapdb.DBMaker;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
@@ -10,17 +8,18 @@ import java.util.function.Consumer;
 
 public class MemoryGraph implements Graph {
 
-    private final ConcurrentMap<Node, Edge[]> adjacencyListMap;
+    private final Map<Node, Edge[]> adjacencyListMap;
 
     public MemoryGraph(ConcurrentMap<Node, Edge[]> adjacencyListMap) {
         this.adjacencyListMap = adjacencyListMap;
     }
 
     public MemoryGraph() {
-        DB db = DBMaker.memoryDB().make();
-        adjacencyListMap = (ConcurrentMap<Node, Edge[]>) db
-                .hashMap("map")
-                .createOrOpen();
+//        DB db = DBMaker.memoryDB().make();
+//        adjacencyListMap = (ConcurrentMap<Node, Edge[]>) db
+//                .hashMap("map")
+//                .createOrOpen();
+        adjacencyListMap = new HashMap<>();
     }
 
     public void addEdge(Edge edge) {
@@ -53,6 +52,15 @@ public class MemoryGraph implements Graph {
             return adjacencyListMap.get(node);
         }
         return new Edge[0];
+    }
+
+    public Edge getConnection(Node from, Node to) {
+        for (Edge connection : getConnections(from)) {
+            if (connection.getTo().equals(to)) {
+                return connection;
+            }
+        }
+        return null;
     }
 
     public Node getRandomNode() {

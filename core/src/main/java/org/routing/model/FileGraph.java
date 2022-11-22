@@ -61,6 +61,11 @@ public class FileGraph implements Graph {
         return new Edge[0];
     }
 
+    @Override
+    public Edge getConnection(Node from, Node to) {
+        return null;
+    }
+
     @NotNull
     @Override
     public Iterator<Node> iterator() {
