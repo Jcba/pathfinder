@@ -3,6 +3,7 @@ package org.routing.search;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.routing.geometries.Point;
+import org.routing.model.Graph;
 import org.routing.model.MemoryGraph;
 import org.routing.model.Node;
 import org.routing.model.Route;
@@ -37,7 +38,7 @@ class AStarPathSearchTest {
     void route_shouldVisitStartAndEndNode() {
         Node start = new Node(new Point(0.0f, 1.0f));
         Node destination = new Node(new Point(5.0f, 5.0f));
-        MemoryGraph memoryGraph = createConnectedGraphWithDepth3(start, destination);
+        Graph memoryGraph = createConnectedGraphWithDepth3(start, destination);
         AStarPathSearch search = new AStarPathSearch(memoryGraph);
 
         Route route = search.route(start, destination);

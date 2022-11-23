@@ -2,12 +2,13 @@ package org.routing.search;
 
 import org.routing.geometries.Point;
 import org.routing.model.Edge;
+import org.routing.model.Graph;
 import org.routing.model.MemoryGraph;
 import org.routing.model.Node;
 
 public class TestGraphs {
 
-    public static MemoryGraph createConnectedGraphWithDepth3(Node start, Node destination) {
+    public static Graph createConnectedGraphWithDepth3(Node start, Node destination) {
         MemoryGraph memoryGraph = new MemoryGraph();
         Node node1 = new Node(new Point(1.0f, 1.0f));
         Node node2 = new Node(new Point(1.0f, 2.0f));
