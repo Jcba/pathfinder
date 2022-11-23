@@ -42,12 +42,12 @@ public class OSMAdapter extends MemoryGraph {
         @Override
         protected void parseDense(Osmformat.DenseNodes denseNodes) {
             long prevId = 0;
-            float prevLat = 0;
-            float prevLon = 0;
+            double prevLat = 0;
+            double prevLon = 0;
             for (int i = 0; i < denseNodes.getIdList().size(); i++) {
                 long id = denseNodes.getId(i) + prevId;
-                float lat = (float) (parseLat(denseNodes.getLat(i)) + prevLat);
-                float lon = (float) (parseLon(denseNodes.getLon(i)) + prevLon);
+                double lat = (parseLat(denseNodes.getLat(i)) + prevLat);
+                double lon = (parseLon(denseNodes.getLon(i)) + prevLon);
                 if (!nodeMap.containsKey(id)) {
                     nodeMap.put(id, new Point(lat, lon));
                 }

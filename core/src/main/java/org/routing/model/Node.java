@@ -45,8 +45,8 @@ public class Node implements Serializable {
         if (getCoordinate() == null) {
             return 0;
         }
-        float lat = getCoordinate().lat();
-        float lon = getCoordinate().lon();
+        double lat = getCoordinate().lat();
+        double lon = getCoordinate().lon();
 
         return (((int) (lat * 6)) << 8) + ((int) lon * 6);
     }

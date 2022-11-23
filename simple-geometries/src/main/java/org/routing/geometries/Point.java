@@ -12,7 +12,7 @@ import static java.lang.Math.*;
         "type",
         "coordinates"
 })
-public record Point (@JsonIgnore float lon, @JsonIgnore float lat) implements Geometry {
+public record Point (@JsonIgnore double lon, @JsonIgnore double lat) implements Geometry {
 
     @JsonGetter("type")
     public String getType() {
@@ -20,7 +20,7 @@ public record Point (@JsonIgnore float lon, @JsonIgnore float lat) implements Ge
     }
 
     @JsonGetter("coordinates")
-    public List<Float> getCoordinates() {
+    public List<Double> getCoordinates() {
         return List.of(lat, lon);
     }
 

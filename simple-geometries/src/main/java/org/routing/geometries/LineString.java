@@ -18,7 +18,7 @@ public record LineString(@JsonIgnore List<Point> points) implements Geometry {
     }
 
     @JsonGetter("coordinates")
-    public List<List<Float>> getCoordinates() {
+    public List<List<Double>> getCoordinates() {
         return points.stream().map(Point::getCoordinates).toList();
     }
 }
