@@ -1,7 +1,5 @@
 package org.routing.model;
 
-import org.routing.geometries.LineString;
-
 import java.io.Serializable;
 
 public class Edge implements Serializable {
@@ -9,19 +7,10 @@ public class Edge implements Serializable {
     private Node to;
     private double cost;
 
-    private LineString geometry;
-
     public Edge(Node from, Node to, double cost) {
         this.from = from;
         this.to = to;
         this.cost = cost;
-    }
-
-    public Edge(Node from, Node to, double cost, LineString geometry) {
-        this.from = from;
-        this.to = to;
-        this.cost = cost;
-        this.geometry = geometry;
     }
 
     public Node getFrom() {
@@ -69,9 +58,5 @@ public class Edge implements Serializable {
         temp = Double.doubleToLongBits(getCost());
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
-    }
-
-    public LineString getGeometry() {
-        return geometry;
     }
 }

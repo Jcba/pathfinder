@@ -1,4 +1,4 @@
-package org.routing.adapters;
+package org.routing.web.adapters;
 
 import org.routing.geometries.Feature;
 import org.routing.geometries.FeatureCollection;
@@ -31,7 +31,7 @@ public class RouteToFeatureCollectionAdapter implements Function<Route, FeatureC
 
         List<Point> routePoints = new ArrayList<>();
         for (Edge edge : edges) {
-            routePoints.addAll(edge.getGeometry().points());
+//            routePoints.addAll(edge.getGeometry().points());
         }
 
         LineString lineString = new LineString(routePoints);

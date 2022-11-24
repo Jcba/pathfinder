@@ -1,7 +1,5 @@
 package org.routing.model;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
@@ -15,10 +13,6 @@ public class MemoryGraph implements Graph {
     }
 
     public MemoryGraph() {
-//        DB db = DBMaker.memoryDB().make();
-//        adjacencyListMap = (ConcurrentMap<Node, Edge[]>) db
-//                .hashMap("map")
-//                .createOrOpen();
         adjacencyListMap = new HashMap<>();
     }
 
@@ -35,16 +29,6 @@ public class MemoryGraph implements Graph {
         edgeList.add(edge);
         Edge[] value = edgeList.toArray(Edge[]::new);
         adjacencyListMap.put(from, value);
-    }
-
-    @Override
-    public void removeEdge(Edge edge) {
-        // not needed because it will automatically be garbage-collected
-    }
-
-    @Override
-    public void removeNode(Node node) {
-        this.adjacencyListMap.remove(node);
     }
 
     public Edge[] getConnections(Node node) {
@@ -69,7 +53,6 @@ public class MemoryGraph implements Graph {
         return nodeList.get(r.nextInt(nodeList.size() / 10));
     }
 
-    @NotNull
     @Override
     public Iterator<Node> iterator() {
         return this.adjacencyListMap.keySet().iterator();

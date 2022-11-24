@@ -18,11 +18,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.mapdb</groupId>
-            <artifactId>mapdb</artifactId>
-            <version>3.0.8</version>
-        </dependency>
-        <dependency>
             <groupId>org.routing</groupId>
             <artifactId>simple-geometries</artifactId>
             <version>1.0.0-SNAPSHOT</version>

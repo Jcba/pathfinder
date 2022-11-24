@@ -2,7 +2,7 @@ package org.routing.web.configuration;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.routing.adapter.OSMAdapter;
-import org.routing.adapters.RouteToFeatureCollectionAdapter;
+import org.routing.web.adapters.RouteToFeatureCollectionAdapter;
 import org.routing.geometries.FeatureCollection;
 import org.routing.model.Graph;
 import org.routing.model.Node;

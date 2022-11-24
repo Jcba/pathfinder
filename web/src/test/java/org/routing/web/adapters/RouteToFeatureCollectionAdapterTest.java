@@ -1,4 +1,4 @@
-package org.routing.adapters;
+package org.routing.web.adapters;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

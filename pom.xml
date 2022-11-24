@@ -13,7 +13,6 @@
         <module>core</module>
         <module>web</module>
         <module>simple-geometries</module>
-        <module>exports</module>
     </modules>
     <dependencies>
         <dependency>
