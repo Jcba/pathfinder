@@ -1,4 +1,4 @@
-package org.routing.adapter;
+package org.routing.importer;
 
 import crosby.binary.BinaryParser;
 import crosby.binary.Osmformat;
@@ -6,7 +6,6 @@ import crosby.binary.file.BlockInputStream;
 import org.routing.geometries.LineString;
 import org.routing.geometries.Point;
 import org.routing.model.Edge;
-import org.routing.model.MemoryGraph;
 import org.routing.model.Node;
 
 import java.io.IOException;
@@ -20,14 +19,28 @@ import java.util.Map;
 
 import static java.nio.file.StandardOpenOption.READ;
 
-public class OSMAdapter extends MemoryGraph {
+public class OSMImporter implements GraphImporter {
     Map<Long, Point> nodeMap = new HashMap<>();
 
-    public OSMAdapter(Path input) throws IOException {
-        InputStream pathInputStream = Files.newInputStream(input, READ);
+    @Override
+    public void importFromFile(Path filePath) {
+        InputStream pathInputStream = null;
+
+        try {
+            pathInputStream = Files.newInputStream(filePath, READ);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         try (BlockInputStream blockInputStream = new BlockInputStream(pathInputStream, new OSMWaysParser())) {
             blockInputStream.process();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    private void storeEdge(Edge edge, LineString lineString) {
+
     }
 
     public class OSMWaysParser extends BinaryParser {
@@ -83,7 +96,9 @@ public class OSMAdapter extends MemoryGraph {
                             Node from = new Node(points.get(0));
                             Node to = new Node(points.get(points.size() - 1));
                             Edge edge = new Edge(from, to, from.getCoordinate().distance(to.getCoordinate()));
-                            addEdge(edge);
+
+                            storeEdge(edge, lineString);
+
                             loadedWays++;
                         }
                     }
