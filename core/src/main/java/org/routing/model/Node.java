@@ -4,9 +4,6 @@ import org.routing.geometries.Point;
 
 import java.io.Serializable;
 
-/**
- * @param coordinate not really needed for routing -- remove in feature
- */
 public class Node implements Serializable {
 
     public Node(Point coordinate) {

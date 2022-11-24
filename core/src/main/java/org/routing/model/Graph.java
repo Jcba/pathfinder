@@ -11,4 +11,6 @@ public interface Graph extends Iterable<Node> {
     Edge[] getConnections(Node node);
 
     Edge getConnection(Node from, Node to);
+
+    Node getRandomNode();
 }

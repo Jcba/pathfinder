@@ -4,7 +4,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.routing.adapter.OSMAdapter;
 import org.routing.adapters.RouteToFeatureCollectionAdapter;
 import org.routing.geometries.FeatureCollection;
-import org.routing.model.MemoryGraph;
+import org.routing.model.Graph;
 import org.routing.model.Node;
 import org.routing.model.Route;
 import org.routing.search.AStarPathSearch;
@@ -20,17 +20,17 @@ import java.nio.file.Path;
 public class RoutingConfiguration {
 
     private final PathSearchAlgorithm search;
-    private final MemoryGraph memoryGraph;
+    private final Graph graph;
 
     @ConfigProperty(name = "network.name")
     String network;
 
     public RoutingConfiguration() throws IOException, URISyntaxException {
-        memoryGraph = loadGraph();
-        search = getPathSearchAlgorithm(memoryGraph);
+        graph = loadGraph();
+        search = getPathSearchAlgorithm(graph);
     }
 
-    public MemoryGraph loadGraph() throws IOException, URISyntaxException {
+    public Graph loadGraph() throws IOException, URISyntaxException {
         URL resource = getClass().getClassLoader().getResource("flevoland-latest.osm.pbf");
         if (null != resource) {
             Path networkPath = Path.of(resource.toURI());
@@ -39,13 +39,13 @@ public class RoutingConfiguration {
         return null;
     }
 
-    public PathSearchAlgorithm getPathSearchAlgorithm(MemoryGraph memoryGraph) {
-        return new AStarPathSearch(memoryGraph);
+    public PathSearchAlgorithm getPathSearchAlgorithm(Graph graph) {
+        return new AStarPathSearch(graph);
     }
 
     public FeatureCollection getRoute() {
-        Node start = memoryGraph.getRandomNode();
-        Node destination = memoryGraph.getRandomNode();
+        Node start = graph.getRandomNode();
+        Node destination = graph.getRandomNode();
         Route route = search.route(start, destination);
 
         return new RouteToFeatureCollectionAdapter().apply(route);
