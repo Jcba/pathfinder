@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>import-adapters</artifactId>
+    <artifactId>importer</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.openstreetmap.pbf</groupId>

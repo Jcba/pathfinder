@@ -1,17 +1,24 @@
 package org.routing.web.adapters;
 
+import io.quarkus.test.Mock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.routing.geometries.Point;
+import org.routing.lookup.GeometryLookup;
 import org.routing.model.Node;
 
 class RouteToFeatureCollectionAdapterTest {
 
-    RouteToFeatureCollectionAdapter fixture;
+    private RouteToFeatureCollectionAdapter fixture;
+
+    @Mock
+    private GeometryLookup geometryLookup;
 
     @BeforeEach
     public void setUp() {
-        fixture = new RouteToFeatureCollectionAdapter();
+        MockitoAnnotations.openMocks(this);
+        fixture = new RouteToFeatureCollectionAdapter(geometryLookup);
     }
 
     @Test

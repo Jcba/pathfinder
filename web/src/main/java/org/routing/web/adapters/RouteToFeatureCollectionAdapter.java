@@ -1,9 +1,7 @@
 package org.routing.web.adapters;
 
-import org.routing.geometries.Feature;
-import org.routing.geometries.FeatureCollection;
-import org.routing.geometries.LineString;
-import org.routing.geometries.Point;
+import org.routing.geometries.*;
+import org.routing.lookup.GeometryLookup;
 import org.routing.model.Edge;
 import org.routing.model.Node;
 import org.routing.model.Route;
@@ -15,6 +13,12 @@ import java.util.UUID;
 import java.util.function.Function;
 
 public class RouteToFeatureCollectionAdapter implements Function<Route, FeatureCollection> {
+
+    private final GeometryLookup geometryLookup;
+
+    public RouteToFeatureCollectionAdapter(GeometryLookup geometryLookup) {
+        this.geometryLookup = geometryLookup;
+    }
 
     @Override
     public FeatureCollection apply(Route route) {
@@ -31,7 +35,10 @@ public class RouteToFeatureCollectionAdapter implements Function<Route, FeatureC
 
         List<Point> routePoints = new ArrayList<>();
         for (Edge edge : edges) {
-//            routePoints.addAll(edge.getGeometry().points());
+            AbstractGeometry<?> edgeGeometry = geometryLookup.findGeometry(edge);
+            if(edgeGeometry instanceof LineString lineStringGeometry) {
+                routePoints.addAll(lineStringGeometry.getPoints());
+            }
         }
 
         LineString lineString = new LineString(routePoints);

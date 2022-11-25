@@ -2,5 +2,5 @@ package org.routing.geometries;
 
 import java.util.Properties;
 
-public record Feature(String id, Geometry geometry, Properties properties) {
+public record Feature(String id, AbstractGeometry<?> abstractGeometry, Properties properties) {
 }

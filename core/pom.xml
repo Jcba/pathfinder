@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>org.routing</groupId>
-            <artifactId>simple-geometries</artifactId>
+            <artifactId>simple-geometry</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

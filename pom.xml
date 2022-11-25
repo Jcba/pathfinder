@@ -9,10 +9,10 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>import-adapters</module>
+        <module>importer</module>
         <module>core</module>
         <module>web</module>
-        <module>simple-geometries</module>
+        <module>simple-geometry</module>
     </modules>
     <dependencies>
         <dependency>
