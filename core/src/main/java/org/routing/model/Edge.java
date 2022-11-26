@@ -1,8 +1,9 @@
 package org.routing.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
-public class Edge implements Serializable {
+public class Edge implements Serializable, KeyProvider {
     private Node from;
     private Node to;
     private double cost;
@@ -58,5 +59,15 @@ public class Edge implements Serializable {
         temp = Double.doubleToLongBits(getCost());
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @Override
+    public String getType() {
+        return "edge";
+    }
+
+    @Override
+    public UUID getId() {
+        return UUID.randomUUID();
     }
 }

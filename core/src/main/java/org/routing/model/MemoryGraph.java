@@ -2,7 +2,6 @@ package org.routing.model;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.Consumer;
 
 public class MemoryGraph implements Graph {
 
@@ -51,20 +50,5 @@ public class MemoryGraph implements Graph {
         Random r = new Random();
         List<Node> nodeList = new ArrayList<>(adjacencyListMap.keySet());
         return nodeList.get(r.nextInt(nodeList.size() / 10));
-    }
-
-    @Override
-    public Iterator<Node> iterator() {
-        return this.adjacencyListMap.keySet().iterator();
-    }
-
-    @Override
-    public void forEach(Consumer<? super Node> action) {
-        Graph.super.forEach(action);
-    }
-
-    @Override
-    public Spliterator<Node> spliterator() {
-        return Graph.super.spliterator();
     }
 }

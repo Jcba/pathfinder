@@ -3,8 +3,9 @@ package org.routing.model;
 import org.routing.geometries.Point;
 
 import java.io.Serializable;
+import java.util.UUID;
 
-public class Node implements Serializable {
+public class Node implements Serializable, KeyProvider {
 
     public Node(Point coordinate) {
         this.coordinate = coordinate;
@@ -46,5 +47,15 @@ public class Node implements Serializable {
         double lon = getCoordinate().getLon();
 
         return (((int) (lat * 6)) << 8) + ((int) lon * 6);
+    }
+
+    @Override
+    public String getType() {
+        return "node";
+    }
+
+    @Override
+    public UUID getId() {
+        return UUID.randomUUID();
     }
 }

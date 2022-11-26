@@ -1,7 +1,7 @@
 package org.routing.web.adapters;
 
 import org.routing.geometries.*;
-import org.routing.lookup.GeometryLookup;
+import org.routing.storage.GeometryLookup;
 import org.routing.model.Edge;
 import org.routing.model.Node;
 import org.routing.model.Route;

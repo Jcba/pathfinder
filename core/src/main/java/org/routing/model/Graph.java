@@ -1,6 +1,6 @@
 package org.routing.model;
 
-public interface Graph extends Iterable<Node> {
+public interface Graph {
 
     void addEdge(Edge edge);
 

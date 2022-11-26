@@ -3,7 +3,6 @@ package org.routing.web.configuration;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.routing.geometries.FeatureCollection;
 import org.routing.importer.OSMImporter;
-import org.routing.lookup.SqliteGeometryLookup;
 import org.routing.model.Graph;
 import org.routing.model.Node;
 import org.routing.model.Route;

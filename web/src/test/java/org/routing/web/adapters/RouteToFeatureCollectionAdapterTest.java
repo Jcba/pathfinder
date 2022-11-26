@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.routing.geometries.Point;
-import org.routing.lookup.GeometryLookup;
+import org.routing.storage.GeometryLookup;
 import org.routing.model.Node;
 
 class RouteToFeatureCollectionAdapterTest {
