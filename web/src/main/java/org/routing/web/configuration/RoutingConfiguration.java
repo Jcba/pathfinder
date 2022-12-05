@@ -49,6 +49,8 @@ public class RoutingConfiguration {
         Node destination = graph.getRandomNode();
         Route route = search.route(start, destination);
 
-        return new RouteToFeatureCollectionAdapter(new SqliteGeometryLookup()).apply(route);
+        // TODO: add geometry lookup
+//        return new RouteToFeatureCollectionAdapter(new SqliteGeometryLookup()).apply(route);
+        return null;
     }
 }
