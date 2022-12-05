@@ -1,8 +1,6 @@
 package org.routing.storage;
 
 import org.routing.geometries.AbstractGeometry;
-import org.routing.model.Edge;
-import org.routing.model.KeyProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,10 +8,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
-public class SqliteGeometryStore<T extends KeyProvider>
-        implements GeometryStore<T>, GeometryLookup<T>, EdgeLookup {
+public class SqliteGeometryStore<T extends KeyProvider> implements GeometryStore<T> {
 
     private static final Logger log = LoggerFactory.getLogger(SqliteGeometryStore.class);
 
@@ -27,14 +23,20 @@ public class SqliteGeometryStore<T extends KeyProvider>
     public void init() {
         if (databaseConfiguration.createSchemaIfNotExists()) {
             executeSql("create schema if not exists routing");
-            executeSql("create table if not exists routing.geometry_kv as (varchar(8) id, geometry geom)");
+            executeSql("create table if not exists routing.geometry_kv as (varchar(12) id, geometry geom)");
         }
     }
 
     @Override
-    public void save(T id, AbstractGeometry<?> geometry) {
-        id.getId();
+    public void save(T key, AbstractGeometry<?> geometry) {
+        key.getId();
         executeSql("insert into ");
+    }
+
+    @Override
+    public AbstractGeometry<?> findById(T key) {
+        long id = key.getId();
+        return null;
     }
 
     private void executeSql(String sql) {
@@ -56,21 +58,5 @@ public class SqliteGeometryStore<T extends KeyProvider>
                 log.error(e.getMessage(), e);
             }
         }
-    }
-
-    @Override
-    public AbstractGeometry<?> findGeometry(T id) {
-        return null;
-    }
-
-    @Override
-    public AbstractGeometry<?> findGeometries(List<T> ids) {
-        return null;
-    }
-
-    @Override
-    public Edge findClosest(AbstractGeometry<?> geometry) {
-        // find closest
-        return null;
     }
 }

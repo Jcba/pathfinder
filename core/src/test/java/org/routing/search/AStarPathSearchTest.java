@@ -27,8 +27,8 @@ class AStarPathSearchTest {
 
     @Test
     void routeEmptyGraph_shouldReturnEmptyRoute() {
-        Node start = new Node(new Point(1.0f, 1.0f));
-        Node destination = new Node(new Point(2.0f, 2.0f));
+        Node start = new Node(10, new Point(1.0f, 1.0f));
+        Node destination = new Node(11, new Point(2.0f, 2.0f));
         Route route = fixture.route(start, destination);
 
         assertThat(route).isNull();
@@ -36,8 +36,8 @@ class AStarPathSearchTest {
 
     @Test
     void route_shouldVisitStartAndEndNode() {
-        Node start = new Node(new Point(0.0f, 1.0f));
-        Node destination = new Node(new Point(5.0f, 5.0f));
+        Node start = new Node(10, new Point(0.0f, 1.0f));
+        Node destination = new Node(11, new Point(5.0f, 5.0f));
         Graph memoryGraph = createConnectedGraphWithDepth3(start, destination);
         AStarPathSearch search = new AStarPathSearch(memoryGraph);
 

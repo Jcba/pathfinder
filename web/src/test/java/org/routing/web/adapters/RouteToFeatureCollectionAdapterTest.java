@@ -23,8 +23,8 @@ class RouteToFeatureCollectionAdapterTest {
 
     @Test
     public void adaptRoute_shouldReturn() {
-        Node start = new Node(new Point(0.0f, 1.0f));
-        Node destination = new Node(new Point(5.0f, 5.0f));
+        Node start = new Node(id, new Point(0.0f, 1.0f));
+        Node destination = new Node(id, new Point(5.0f, 5.0f));
 //        Graph graph = TestGraphs.createConnectedGraphWithDepth3(start, destination);
 //
 //        AStarPathSearch search = new AStarPathSearch(graph);

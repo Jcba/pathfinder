@@ -1,13 +1,16 @@
 package org.routing.model;
 
 import org.routing.geometries.Point;
+import org.routing.storage.KeyProvider;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public class Node implements Serializable, KeyProvider {
 
-    public Node(Point coordinate) {
+    private final long id;
+
+    public Node(long id, Point coordinate) {
+        this.id = id;
         this.coordinate = coordinate;
     }
 
@@ -22,10 +25,13 @@ public class Node implements Serializable, KeyProvider {
     }
 
     @Override
-    public String toString() {
-        return "{" +
-                "point: " + coordinate +
-                '}';
+    public String getType() {
+        return "node";
+    }
+
+    @Override
+    public long getId() {
+        return id;
     }
 
     @Override
@@ -35,7 +41,7 @@ public class Node implements Serializable, KeyProvider {
 
         Node node = (Node) o;
 
-        return getCoordinate() != null ? getCoordinate().equals(node.getCoordinate()) : node.getCoordinate() == null;
+        return getId() == node.getId();
     }
 
     @Override
@@ -47,15 +53,5 @@ public class Node implements Serializable, KeyProvider {
         double lon = getCoordinate().getLon();
 
         return (((int) (lat * 6)) << 8) + ((int) lon * 6);
-    }
-
-    @Override
-    public String getType() {
-        return "node";
-    }
-
-    @Override
-    public UUID getId() {
-        return UUID.randomUUID();
     }
 }

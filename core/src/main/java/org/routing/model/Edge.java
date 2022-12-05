@@ -1,7 +1,8 @@
 package org.routing.model;
 
+import org.routing.storage.KeyProvider;
+
 import java.io.Serializable;
-import java.util.UUID;
 
 public class Edge implements Serializable, KeyProvider {
     private Node from;
@@ -39,6 +40,16 @@ public class Edge implements Serializable, KeyProvider {
     }
 
     @Override
+    public String getType() {
+        return "edge";
+    }
+
+    @Override
+    public long getId() {
+        return (from.getId() >> 8) + to.getId();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -59,15 +70,5 @@ public class Edge implements Serializable, KeyProvider {
         temp = Double.doubleToLongBits(getCost());
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
-    }
-
-    @Override
-    public String getType() {
-        return "edge";
-    }
-
-    @Override
-    public UUID getId() {
-        return UUID.randomUUID();
     }
 }

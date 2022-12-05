@@ -46,6 +46,7 @@ public class OSMImporter implements GraphImporter {
     public class OSMWaysParser extends BinaryParser {
 
         private long loadedWays = 0;
+        private long nodeSequence = 0;
 
         @Override
         protected void parseRelations(List<Osmformat.Relation> list) {
@@ -93,8 +94,8 @@ public class OSMImporter implements GraphImporter {
                         if (!refsList.isEmpty() && points.size() >= 2) {
                             LineString lineString = new LineString(points);
 
-                            Node from = new Node(points.get(0));
-                            Node to = new Node(points.get(points.size() - 1));
+                            Node from = new Node(nodeSequence++, points.get(0));
+                            Node to = new Node(nodeSequence++, points.get(points.size() - 1));
                             Edge edge = new Edge(from, to, from.getCoordinate().distance(to.getCoordinate()));
 
                             storeEdge(edge, lineString);

@@ -1,6 +1,4 @@
-package org.routing.model;
-
-import java.util.UUID;
+package org.routing.storage;
 
 public interface KeyProvider {
 
@@ -13,9 +11,10 @@ public interface KeyProvider {
     String getType();
 
     /**
-     * Returns a globally unique id
+     * Get the id for this element.
+     * Each element of the same key type should have its own unique id.
      *
-     * @return a globally unique id
+     * @return the id of this element
      */
-    UUID getId();
+    long getId();
 }
