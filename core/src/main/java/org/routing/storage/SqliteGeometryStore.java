@@ -22,8 +22,7 @@ public class SqliteGeometryStore<T extends KeyProvider> implements GeometryStore
 
     public void init() {
         if (databaseConfiguration.createSchemaIfNotExists()) {
-            executeSql("create schema if not exists routing");
-            executeSql("create table if not exists routing.geometry_kv as (varchar(12) id, geometry geom)");
+            executeSql("create table if not exists example (id integer primary key, geom text);");
         }
     }
 

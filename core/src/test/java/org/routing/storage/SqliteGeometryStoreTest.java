@@ -18,7 +18,7 @@ class SqliteGeometryStoreTest {
     @BeforeEach
     void setUp() {
         DatabaseConfiguration databaseConfiguration = new DatabaseConfiguration(
-                "",
+                "jdbc:sqlite:sample.db",
                 60,
                 true
         );
