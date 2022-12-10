@@ -20,6 +20,7 @@ class SqliteGeometryStoreTest {
         DatabaseConfiguration databaseConfiguration = new DatabaseConfiguration(
                 "jdbc:sqlite:sample.db",
                 60,
+                true,
                 true
         );
         fixture = new SqliteGeometryStore<>(databaseConfiguration);
