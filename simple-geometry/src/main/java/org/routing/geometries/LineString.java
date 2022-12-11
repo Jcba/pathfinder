@@ -10,15 +10,22 @@ import java.util.List;
         "coordinates"
 })
 public class LineString extends AbstractGeometry<List<List<Double>>> {
+
     @JsonIgnore
-    private final List<Point> points;
+    private List<Point> points;
+
+    public LineString() {
+        // default constructor
+        type = "LineString";
+    }
 
     public LineString(List<Point> points) {
         this.points = points;
+        type = "LineString";
     }
 
     public String getType() {
-        return "LineString";
+        return type;
     }
 
     public List<List<Double>> getCoordinates() {

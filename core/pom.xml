@@ -28,6 +28,16 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.40.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.orbisgis</groupId>
+            <artifactId>h2gis</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.14.1</version>
+        </dependency>
     </dependencies>
 
 </project>

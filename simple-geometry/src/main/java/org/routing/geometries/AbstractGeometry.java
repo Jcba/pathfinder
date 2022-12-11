@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 
 public abstract class AbstractGeometry<T> {
 
+    protected String type;
+
     /**
      * The type according to the GeoJSON specification
      *

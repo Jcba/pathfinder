@@ -5,15 +5,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.routing.geometries.Point;
-import org.routing.storage.GeometryLookup;
+import org.routing.model.Edge;
 import org.routing.model.Node;
+import org.routing.storage.GeometryStore;
 
 class RouteToFeatureCollectionAdapterTest {
 
     private RouteToFeatureCollectionAdapter fixture;
 
     @Mock
-    private GeometryLookup geometryLookup;
+    private GeometryStore<Edge> geometryLookup;
 
     @BeforeEach
     public void setUp() {
@@ -23,8 +24,8 @@ class RouteToFeatureCollectionAdapterTest {
 
     @Test
     public void adaptRoute_shouldReturn() {
-        Node start = new Node(id, new Point(0.0f, 1.0f));
-        Node destination = new Node(id, new Point(5.0f, 5.0f));
+        Node start = new Node(0, new Point(0.0f, 1.0f));
+        Node destination = new Node(1, new Point(5.0f, 5.0f));
 //        Graph graph = TestGraphs.createConnectedGraphWithDepth3(start, destination);
 //
 //        AStarPathSearch search = new AStarPathSearch(graph);
