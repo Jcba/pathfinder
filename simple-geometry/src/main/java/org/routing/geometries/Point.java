@@ -2,17 +2,10 @@ package org.routing.geometries;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import java.util.List;
 
 import static java.lang.Math.*;
 
-@JsonPropertyOrder({
-        "type",
-        "coordinates"
-})
-public class Point extends AbstractGeometry<List<Double>> {
+public class Point extends AbstractGeometry<Double[]> {
 
     private final double lon;
     private final double lat;
@@ -28,8 +21,8 @@ public class Point extends AbstractGeometry<List<Double>> {
     }
 
     @JsonGetter("coordinates")
-    public List<Double> getCoordinates() {
-        return List.of(lat, lon);
+    public Double[] getCoordinates() {
+        return new Double[]{lat, lon};
     }
 
     @JsonIgnore

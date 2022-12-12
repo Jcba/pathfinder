@@ -1,18 +1,13 @@
 package org.routing.geometries;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.Arrays;
 import java.util.List;
 
-@JsonPropertyOrder({
-        "type",
-        "coordinates"
-})
-public class LineString extends AbstractGeometry<List<List<Double>>> {
+public class LineString extends AbstractGeometry<Double[][]> {
 
-    @JsonIgnore
-    private List<Point> points;
+    private Double[][] coordinates;
 
     public LineString() {
         // default constructor
@@ -20,7 +15,7 @@ public class LineString extends AbstractGeometry<List<List<Double>>> {
     }
 
     public LineString(List<Point> points) {
-        this.points = points;
+        this.coordinates = points.stream().map(Point::getCoordinates).toArray(Double[][]::new);
         type = "LineString";
     }
 
@@ -28,11 +23,27 @@ public class LineString extends AbstractGeometry<List<List<Double>>> {
         return type;
     }
 
-    public List<List<Double>> getCoordinates() {
-        return points.stream().map(Point::getCoordinates).toList();
+    public Double[][] getCoordinates() {
+        return coordinates;
     }
 
+    @JsonIgnore
     public List<Point> getPoints() {
-        return points;
+        return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LineString that = (LineString) o;
+
+        return Arrays.deepEquals(getCoordinates(), that.getCoordinates());
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(getCoordinates());
     }
 }
