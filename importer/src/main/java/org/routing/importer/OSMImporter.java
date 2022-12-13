@@ -7,6 +7,7 @@ import org.routing.geometries.LineString;
 import org.routing.geometries.Point;
 import org.routing.model.Edge;
 import org.routing.model.Node;
+import org.routing.storage.GeometryStore;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,12 @@ import static java.nio.file.StandardOpenOption.READ;
 
 public class OSMImporter implements GraphImporter {
     Map<Long, Point> nodeMap = new HashMap<>();
+
+    private final GeometryStore<Edge> edgeGeometryStore;
+
+    public OSMImporter(GeometryStore<Edge> edgeGeometryStore) {
+        this.edgeGeometryStore = edgeGeometryStore;
+    }
 
     @Override
     public void importFromFile(Path filePath) {
@@ -40,7 +47,7 @@ public class OSMImporter implements GraphImporter {
     }
 
     private void storeEdge(Edge edge, LineString lineString) {
-
+        edgeGeometryStore.save(edge, lineString);
     }
 
     public class OSMWaysParser extends BinaryParser {
