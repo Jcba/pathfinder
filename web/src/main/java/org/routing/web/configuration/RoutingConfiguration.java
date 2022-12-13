@@ -2,10 +2,7 @@ package org.routing.web.configuration;
 
 import org.routing.geometries.FeatureCollection;
 import org.routing.importer.OSMImporter;
-import org.routing.model.Edge;
-import org.routing.model.Graph;
-import org.routing.model.Node;
-import org.routing.model.Route;
+import org.routing.model.*;
 import org.routing.search.AStarPathSearch;
 import org.routing.search.PathSearchAlgorithm;
 import org.routing.storage.DatabaseConfiguration;
@@ -43,12 +40,13 @@ public class RoutingConfiguration {
 
     public Graph loadGraph() throws URISyntaxException {
         URL resource = getClass().getClassLoader().getResource("flevoland-latest.osm.pbf");
+        Graph graph = new MemoryGraph();
         if (null != resource) {
             Path networkPath = Path.of(resource.toURI());
             OSMImporter osmImporter = new OSMImporter(edgeGeometryStore);
-            osmImporter.importFromFile(networkPath);
+            osmImporter.importFromFile(networkPath, graph);
         }
-        return null;
+        return graph;
     }
 
     public PathSearchAlgorithm getPathSearchAlgorithm(Graph graph) {

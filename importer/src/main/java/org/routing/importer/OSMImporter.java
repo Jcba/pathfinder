@@ -6,6 +6,7 @@ import crosby.binary.file.BlockInputStream;
 import org.routing.geometries.LineString;
 import org.routing.geometries.Point;
 import org.routing.model.Edge;
+import org.routing.model.Graph;
 import org.routing.model.Node;
 import org.routing.storage.GeometryStore;
 
@@ -30,7 +31,7 @@ public class OSMImporter implements GraphImporter {
     }
 
     @Override
-    public void importFromFile(Path filePath) {
+    public Graph importFromFile(Path filePath, Graph graph) {
         InputStream pathInputStream = null;
 
         try {
@@ -39,21 +40,30 @@ public class OSMImporter implements GraphImporter {
             throw new RuntimeException(e);
         }
 
-        try (BlockInputStream blockInputStream = new BlockInputStream(pathInputStream, new OSMWaysParser())) {
+        try (BlockInputStream blockInputStream = new BlockInputStream(pathInputStream, new OSMWaysParser(graph))) {
             blockInputStream.process();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
 
-    private void storeEdge(Edge edge, LineString lineString) {
-        edgeGeometryStore.save(edge, lineString);
+        return graph;
     }
 
     public class OSMWaysParser extends BinaryParser {
 
         private long loadedWays = 0;
         private long nodeSequence = 0;
+
+        private final Graph graph;
+
+        public OSMWaysParser(Graph graph) {
+            this.graph = graph;
+        }
+
+        private void storeEdge(Edge edge, LineString lineString) {
+            edgeGeometryStore.save(edge, lineString);
+            graph.addEdge(edge);
+        }
 
         @Override
         protected void parseRelations(List<Osmformat.Relation> list) {

@@ -3,6 +3,7 @@ package org.routing.importer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.routing.model.Edge;
+import org.routing.model.MemoryGraph;
 import org.routing.storage.DatabaseConfiguration;
 import org.routing.storage.GeometryStore;
 import org.routing.storage.H2GisGeometryStore;
@@ -31,7 +32,7 @@ class OSMImporterTest {
             );
             GeometryStore<Edge> edgeGeometryStore = new H2GisGeometryStore<>(databaseConfiguration);
             OSMImporter osmImporter = new OSMImporter(edgeGeometryStore);
-            osmImporter.importFromFile(flevoland);
+            osmImporter.importFromFile(flevoland, new MemoryGraph());
         }
     }
 }

@@ -1,8 +1,10 @@
 package org.routing.importer;
 
+import org.routing.model.Graph;
+
 import java.nio.file.Path;
 
 public interface GraphImporter {
 
-    void importFromFile(Path filePath);
+    Graph importFromFile(Path filePath, Graph graph);
 }
