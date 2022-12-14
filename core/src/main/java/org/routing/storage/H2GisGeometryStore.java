@@ -32,7 +32,7 @@ public class H2GisGeometryStore<T extends KeyProvider> implements GeometryStore<
             executeUpdate("drop table if exists geometry_kv;");
         }
         if (databaseConfiguration.createSchemaIfNotExists()) {
-            executeUpdate("create table if not exists geometry_kv (key_id integer primary key, geom geometry);");
+            executeUpdate("create table if not exists geometry_kv (key_id bigint primary key, geom geometry);");
         }
 
         createSpatialIndex();

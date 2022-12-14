@@ -46,7 +46,7 @@ public class Edge implements Serializable, KeyProvider {
 
     @Override
     public long getId() {
-        return (from.getId() >> 8) + to.getId();
+        return Long.parseLong(from.getId() + "" + to.getId());
     }
 
     @Override

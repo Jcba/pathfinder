@@ -1,11 +1,18 @@
 package org.routing.geometries;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.List;
 
-@JsonRootName("featureCollection")
-@JsonTypeName("featureCollection")
+@JsonPropertyOrder({
+        "type",
+        "features"
+})
 public record FeatureCollection(List<Feature> features) {
+
+    @JsonGetter("type")
+    String getType() {
+        return "FeatureCollection";
+    }
 }

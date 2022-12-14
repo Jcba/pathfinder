@@ -54,6 +54,8 @@ public class OSMImporter implements GraphImporter {
         private long loadedWays = 0;
         private long nodeSequence = 0;
 
+        private Map<Point, Long> pointNodeIdMap = new HashMap<>();
+
         private final Graph graph;
 
         public OSMWaysParser(Graph graph) {
@@ -111,11 +113,16 @@ public class OSMImporter implements GraphImporter {
                         if (!refsList.isEmpty() && points.size() >= 2) {
                             LineString lineString = new LineString(points);
 
-                            Node from = new Node(nodeSequence++, points.get(0));
-                            Node to = new Node(nodeSequence++, points.get(points.size() - 1));
+                            long firstNodeId = pointNodeIdMap.computeIfAbsent(points.get(0), v -> nodeSequence++);
+                            long secondNodeId = pointNodeIdMap.computeIfAbsent(points.get(points.size() - 1), v -> nodeSequence++);
+
+                            Node from = new Node(firstNodeId, points.get(0));
+                            Node to = new Node(secondNodeId, points.get(points.size() - 1));
                             Edge edge = new Edge(from, to, from.getCoordinate().distance(to.getCoordinate()));
+                            Edge edgeBack = new Edge(to, from, from.getCoordinate().distance(to.getCoordinate()));
 
                             storeEdge(edge, lineString);
+                            storeEdge(edgeBack, lineString);
 
                             loadedWays++;
                         }

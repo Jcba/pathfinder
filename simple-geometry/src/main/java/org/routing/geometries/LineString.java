@@ -29,7 +29,7 @@ public class LineString extends AbstractGeometry<Double[][]> {
 
     @JsonIgnore
     public List<Point> getPoints() {
-        return null;
+        return Arrays.stream(getCoordinates()).map(c -> new Point(c[1], c[0])).toList();
     }
 
     @Override
