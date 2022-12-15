@@ -10,9 +10,9 @@ public class Point extends AbstractGeometry<Double[]> {
     private final double lon;
     private final double lat;
 
-    public Point(double lon, double lat) {
-        this.lon = lon;
+    public Point(double lat, double lon) {
         this.lat = lat;
+        this.lon = lon;
     }
 
     @JsonGetter("type")
@@ -22,7 +22,7 @@ public class Point extends AbstractGeometry<Double[]> {
 
     @JsonGetter("coordinates")
     public Double[] getCoordinates() {
-        return new Double[]{lat, lon};
+        return new Double[]{lon, lat};
     }
 
     @JsonIgnore

@@ -86,13 +86,13 @@ public class OSMParser extends BinaryParser {
 
                     Node from = new Node(firstNodeId, points.get(0));
                     Node to = new Node(secondNodeId, points.get(points.size() - 1));
-                    Edge edge = new Edge(edgeSequence++, from, to, from.getCoordinate().distance(to.getCoordinate()));
+                    Edge edge = new Edge(edgeSequence++, from, to, lineString.getDistance());
                     storeEdge(edge, lineString);
 
-                    if (isTrue(expandedWayKeyValues.get("oneway"))) {
-                        Edge edgeBack = new Edge(edgeSequence++, to, from, from.getCoordinate().distance(to.getCoordinate()));
-                        storeEdge(edgeBack, lineString);
-                    }
+//                    if (isTrue(expandedWayKeyValues.get("oneway"))) {
+//                        Edge edgeBack = new Edge(edgeSequence++, to, from, lineString.getDistance());
+//                        storeEdge(edgeBack, lineString);
+//                    }
 
                     loadedWays++;
                 }

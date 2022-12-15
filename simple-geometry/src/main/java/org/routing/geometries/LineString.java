@@ -32,6 +32,19 @@ public class LineString extends AbstractGeometry<Double[][]> {
         return Arrays.stream(getCoordinates()).map(c -> new Point(c[1], c[0])).toList();
     }
 
+    @JsonIgnore
+    public double getDistance() {
+        double distance = 0;
+        List<Point> points = getPoints();
+        if (points.size() < 2) {
+            return distance;
+        }
+        for (int i = 0; i < points.size() - 1; i++) {
+            distance += points.get(i).distance(points.get(i + 1));
+        }
+        return distance;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
