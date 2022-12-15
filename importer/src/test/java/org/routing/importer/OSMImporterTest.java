@@ -2,6 +2,7 @@ package org.routing.importer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.routing.importer.osm.OSMImporter;
 import org.routing.model.Edge;
 import org.routing.model.MemoryGraph;
 import org.routing.storage.DatabaseConfiguration;

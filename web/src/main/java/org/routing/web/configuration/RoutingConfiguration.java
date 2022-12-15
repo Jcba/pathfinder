@@ -1,7 +1,7 @@
 package org.routing.web.configuration;
 
 import org.routing.geometries.FeatureCollection;
-import org.routing.importer.OSMImporter;
+import org.routing.importer.osm.OSMImporter;
 import org.routing.model.*;
 import org.routing.search.AStarPathSearch;
 import org.routing.search.PathSearchAlgorithm;

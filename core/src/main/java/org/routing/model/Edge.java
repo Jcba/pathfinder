@@ -5,11 +5,13 @@ import org.routing.storage.KeyProvider;
 import java.io.Serializable;
 
 public class Edge implements Serializable, KeyProvider {
+    private final long id;
     private Node from;
     private Node to;
     private double cost;
 
-    public Edge(Node from, Node to, double cost) {
+    public Edge(long id, Node from, Node to, double cost) {
+        this.id = id;
         this.from = from;
         this.to = to;
         this.cost = cost;
@@ -46,7 +48,7 @@ public class Edge implements Serializable, KeyProvider {
 
     @Override
     public long getId() {
-        return Long.parseLong(from.getId() + "" + to.getId());
+        return id;
     }
 
     @Override
