@@ -39,8 +39,6 @@ public class AStarPathSearch implements PathSearchAlgorithm {
                 return reconstructPath(cameFrom, current);
             }
 
-            openSet.remove(current);
-
             for (Edge connection : graph.getConnections(current)) {
                 double tentativeGScore = gScore.getOrDefault(current, 0.0) + connection.getCost();
                 Node neighbor = connection.getTo();

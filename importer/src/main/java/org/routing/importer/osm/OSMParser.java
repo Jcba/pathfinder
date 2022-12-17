@@ -90,8 +90,8 @@ public class OSMParser extends BinaryParser {
                     storeEdge(edge, lineString);
 
 //                    if (isTrue(expandedWayKeyValues.get("oneway"))) {
-//                        Edge edgeBack = new Edge(edgeSequence++, to, from, lineString.getDistance());
-//                        storeEdge(edgeBack, lineString);
+                        Edge edgeBack = new Edge(edgeSequence++, to, from, lineString.getDistance());
+                        storeEdge(edgeBack, lineString);
 //                    }
 
                     loadedWays++;
