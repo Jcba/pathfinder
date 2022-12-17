@@ -8,7 +8,7 @@ public interface PathSearchAlgorithm {
     /**
      * Calculate the fastest route from a start Node to an end Node
      *
-     * @param start the start Node
+     * @param start       the start Node
      * @param destination the end Node
      * @return the fastest route
      */

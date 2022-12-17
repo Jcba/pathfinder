@@ -3,13 +3,12 @@ package org.routing.storage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.routing.geometries.AbstractGeometry;
-import org.routing.geometries.LineString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 
-public class H2GisGeometryStore<T extends KeyProvider> implements GeometryStore<T> {
+public class H2GisGeometryStore<T extends KeyProvider> implements GeometryStore<T>, GeometryLookup {
 
     private static final Logger log = LoggerFactory.getLogger(H2GisGeometryStore.class);
 
@@ -74,7 +73,23 @@ public class H2GisGeometryStore<T extends KeyProvider> implements GeometryStore<
         try (ResultSet resultSet = executeQuery(String.format("select ST_AsGeoJson(geom) geojson from geometry_kv where key_id = '%s'", id.getId()))) {
             resultSet.next();
             String geojson = resultSet.getString("geojson");
-            return objectMapper.readValue(geojson, LineString.class);
+            return objectMapper.readValue(geojson, AbstractGeometry.class);
+        } catch (SQLException | JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public GeometryKeyReference findClosest(AbstractGeometry<?> geometry) {
+        try (ResultSet resultSet = executeQuery(String.format("""
+                        select key_id, st_distance(geom, ST_GeomFromGeoJson('%s')) as distance
+                        from geometry_kv
+                        order by distance limit 1
+                        """,
+                objectMapper.writeValueAsString(geometry)))) {
+            resultSet.next();
+            long keyId = resultSet.getLong("key_id");
+            return new GeometryKeyReference("edge", keyId);
         } catch (SQLException | JsonProcessingException e) {
             throw new RuntimeException(e);
         }

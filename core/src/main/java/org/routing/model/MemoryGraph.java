@@ -1,18 +1,23 @@
 package org.routing.model;
 
+import org.routing.storage.KeyProvider;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 
 public class MemoryGraph implements Graph {
 
     private final Map<Node, Edge[]> adjacencyListMap;
+    private final Map<Long, Edge> edgeIdEdgeMap;
 
     public MemoryGraph(ConcurrentMap<Node, Edge[]> adjacencyListMap) {
         this.adjacencyListMap = adjacencyListMap;
+        this.edgeIdEdgeMap = new HashMap<>();
     }
 
     public MemoryGraph() {
         adjacencyListMap = new HashMap<>();
+        edgeIdEdgeMap = new HashMap<>();
     }
 
     public void addEdge(Edge edge) {
@@ -28,6 +33,7 @@ public class MemoryGraph implements Graph {
         edgeList.add(edge);
         Edge[] value = edgeList.toArray(Edge[]::new);
         adjacencyListMap.put(from, value);
+        edgeIdEdgeMap.put(edge.getId(), edge);
     }
 
     public Edge[] getConnections(Node node) {
@@ -50,5 +56,13 @@ public class MemoryGraph implements Graph {
         Random r = new Random();
         List<Node> nodeList = new ArrayList<>(adjacencyListMap.keySet());
         return nodeList.get(r.nextInt(nodeList.size() / 10));
+    }
+
+    @Override
+    public Edge findEdge(KeyProvider key) {
+        if (key.getType().equals(Edge.KEY_TYPE)) {
+            return edgeIdEdgeMap.get(key.getId());
+        }
+        return null;
     }
 }

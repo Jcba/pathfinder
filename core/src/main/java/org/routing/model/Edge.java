@@ -5,6 +5,7 @@ import org.routing.storage.KeyProvider;
 import java.io.Serializable;
 
 public class Edge implements Serializable, KeyProvider {
+    static String KEY_TYPE = "edge";
     private final long id;
     private Node from;
     private Node to;
@@ -43,7 +44,7 @@ public class Edge implements Serializable, KeyProvider {
 
     @Override
     public String getType() {
-        return "edge";
+        return KEY_TYPE;
     }
 
     @Override
