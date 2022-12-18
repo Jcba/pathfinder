@@ -56,7 +56,7 @@ public class RoutingConfiguration {
     }
 
     @Bean
-    public PathSearchAlgorithm getPathSearchAlgorithm(Graph graph) {
+    public PathSearchAlgorithm pathSearchAlgorithm(Graph graph) {
         return new AStarPathSearch(graph);
     }
 

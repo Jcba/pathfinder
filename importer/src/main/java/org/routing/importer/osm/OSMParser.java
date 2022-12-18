@@ -18,10 +18,10 @@ public class OSMParser extends BinaryParser {
 
     private final Map<Point, Long> pointNodeIdMap = new HashMap<>();
     private final Map<Long, Point> nodeMap = new HashMap<>();
+    private final Map<Long, Short> nodeDegreeMap = new HashMap<>();
     private final Graph graph;
     private final GeometryStore<Edge> edgeGeometryStore;
 
-    private long loadedWays = 0;
     private long nodeSequence = 0;
     private long edgeSequence = 0;
 
@@ -66,74 +66,106 @@ public class OSMParser extends BinaryParser {
     @Override
     protected void parseWays(List<Osmformat.Way> list) {
         for (Osmformat.Way way : list) {
-            Map<String, String> expandedWayKeyValues = getExpandedKeyVals(way.getKeysList(), way.getValsList());
+            Map<String, List<String>> expandedWayKeyValues = getExpandedKeyVals(way.getKeysList(), way.getValsList());
+
+            if (shouldParseWayType(expandedWayKeyValues)) {
+                List<Long> refsList = way.getRefsList();
+                long prevNodeReference = 0;
+                for (long ref : refsList) {
+                    long nodeId = ref + prevNodeReference;
+                    if (nodeDegreeMap.containsKey(nodeId)) {
+                        nodeDegreeMap.put(nodeId, (short) (nodeDegreeMap.get(nodeId) + 1));
+                    } else {
+                        nodeDegreeMap.put(nodeId, (short) 1);
+                    }
+                    prevNodeReference = nodeId;
+                }
+            }
+        }
+
+        for (Osmformat.Way way : list) {
+            Map<String, List<String>> expandedWayKeyValues = getExpandedKeyVals(way.getKeysList(), way.getValsList());
 
             if (shouldParseWayType(expandedWayKeyValues)) {
                 List<Long> refsList = way.getRefsList();
                 List<Point> points = new ArrayList<>();
                 long prevNodeReference = 0;
                 for (long ref : refsList) {
-                    Point node = nodeMap.get(ref + prevNodeReference);
+                    long nodeId = ref + prevNodeReference;
+                    Point node = nodeMap.get(nodeId);
                     points.add(node);
-                    prevNodeReference = ref + prevNodeReference;
+                    if (nodeDegreeMap.get(nodeId) > 1) {
+                        addEdge(points, expandedWayKeyValues);
+                        points = new ArrayList<>();
+                        points.add(node);
+                    }
+                    prevNodeReference = nodeId;
                 }
-
-                if (!refsList.isEmpty() && points.size() >= 2) {
-                    LineString lineString = new LineString(points);
-
-                    long firstNodeId = pointNodeIdMap.computeIfAbsent(points.get(0), v -> nodeSequence++);
-                    long secondNodeId = pointNodeIdMap.computeIfAbsent(points.get(points.size() - 1), v -> nodeSequence++);
-
-                    Node from = new Node(firstNodeId, points.get(0));
-                    Node to = new Node(secondNodeId, points.get(points.size() - 1));
-                    Edge edge = new Edge(edgeSequence++, from, to, lineString.getDistance());
-                    storeEdge(edge, lineString);
-
-//                    if (isTrue(expandedWayKeyValues.get("oneway"))) {
-                        Edge edgeBack = new Edge(edgeSequence++, to, from, lineString.getDistance());
-                        storeEdge(edgeBack, lineString);
-//                    }
-
-                    loadedWays++;
-                }
+                addEdge(points, expandedWayKeyValues);
             }
         }
     }
 
-    private boolean isTrue(String value) {
-        if (null == value) {
-            return false;
+    private void addEdge(List<Point> points, Map<String, List<String>> expandedWayKeyValues) {
+        if (points.size() >= 2) {
+            LineString lineString = new LineString(points);
+
+            long firstNodeId = pointNodeIdMap.computeIfAbsent(points.get(0), v -> nodeSequence++);
+            long secondNodeId = pointNodeIdMap.computeIfAbsent(points.get(points.size() - 1), v -> nodeSequence++);
+
+            Node from = new Node(firstNodeId, points.get(0));
+            Node to = new Node(secondNodeId, points.get(points.size() - 1));
+            Edge edge = new Edge(edgeSequence++, from, to, lineString.getDistance());
+            storeEdge(edge, lineString);
+
+            if (!isTrue(expandedWayKeyValues.get("oneway"))) {
+                Edge edgeBack = new Edge(edgeSequence++, to, from, lineString.getDistance());
+                storeEdge(edgeBack, lineString);
+            }
         }
-        return value.equals("yes") ||
-                value.equals("true") ||
-                value.equals("1");
     }
 
-    private Map<String, String> getExpandedKeyVals(List<Integer> keysList, List<Integer> valsList) {
-        Map<String, String> result = new HashMap<>(keysList.size());
-        for (int i = 0; i < keysList.size(); i++) {
-            result.put(getStringById(keysList.get(i)), getStringById(valsList.get(i)));
+    private boolean isTrue(List<String> values) {
+        if (null == values) {
+            return false;
         }
+        return values.contains("yes") ||
+                values.contains("true") ||
+                values.contains("1");
+    }
+
+    private Map<String, List<String>> getExpandedKeyVals(List<Integer> keysList, List<Integer> valsList) {
+        Map<String, List<String>> result = new HashMap<>(keysList.size());
+        for (int i = 0; i < keysList.size(); i++) {
+            String key = getStringById(keysList.get(i));
+            String value = getStringById(valsList.get(i));
+            if (result.containsKey(key)) {
+                result.get(key).add(value);
+            } else {
+                result.put(key, List.of(value));
+            }
+        }
+
         return result;
     }
 
-    private boolean shouldParseWayType(Map<String, String> expandedWayKeyVals) {
+    private boolean shouldParseWayType(Map<String, List<String>> expandedWayKeyVals) {
         return expandedWayKeyVals.containsKey("highway") && shouldParseHighWayType(expandedWayKeyVals.get("highway"));
     }
 
-    private boolean shouldParseHighWayType(String highwayType) {
-        return highwayType.equals("motorway") ||
-                highwayType.equals("trunk") ||
-                highwayType.equals("primary") ||
-                highwayType.equals("secondary") ||
-                highwayType.equals("tertiary") ||
-                highwayType.equals("unclassified") ||
-                highwayType.equals("residential") ||
-                highwayType.equals("motorway_link") ||
-                highwayType.equals("trunk_link") ||
-                highwayType.equals("primary_link") ||
-                highwayType.equals("secondary_link") ||
-                highwayType.equals("tertiary_link");
+    private boolean shouldParseHighWayType(List<String> highwayTypes) {
+        return highwayTypes.contains("motorway") ||
+                highwayTypes.contains("trunk") ||
+                highwayTypes.contains("primary") ||
+                highwayTypes.contains("secondary") ||
+                highwayTypes.contains("tertiary") ||
+                highwayTypes.contains("unclassified") ||
+                highwayTypes.contains("residential") ||
+                highwayTypes.contains("motorway_link") ||
+                highwayTypes.contains("trunk_link") ||
+                highwayTypes.contains("primary_link") ||
+                highwayTypes.contains("secondary_link") ||
+                highwayTypes.contains("tertiary_link");
     }
 
     @Override
@@ -148,6 +180,6 @@ public class OSMParser extends BinaryParser {
                 Loaded %s nodes
                 Loaded %s edges
                 ------------------------------------
-                %n""", nodeMap.size(), loadedWays);
+                %n""", nodeSequence, edgeSequence);
     }
 }
