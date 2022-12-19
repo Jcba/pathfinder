@@ -42,22 +42,18 @@ public class RoutingController {
                                    @RequestParam("fromLon") Double fromLon,
                                    @RequestParam("toLat") Double toLat,
                                    @RequestParam("toLon") Double toLon) {
-        Node start = graph.getRandomNode();
-        Node destination = graph.getRandomNode();
 
-        if (null != fromLat) {
-            GeometryKeyReference closestFrom = geometryLookup.findClosest(new Point(fromLat, fromLon));
-            GeometryKeyReference closestTo = geometryLookup.findClosest(new Point(toLat, toLon));
+        GeometryKeyReference closestFrom = geometryLookup.findClosest(new Point(fromLat, fromLon));
+        GeometryKeyReference closestTo = geometryLookup.findClosest(new Point(toLat, toLon));
 
-            log.info("closest from: {}", closestFrom);
-            log.info("closest to: {}", closestTo);
+        log.info("closest from: {}", closestFrom);
+        log.info("closest to: {}", closestTo);
 
-            Edge fromEdge = graph.findEdge(closestFrom);
-            Edge toEdge = graph.findEdge(closestTo);
+        Edge fromEdge = graph.findEdge(closestFrom);
+        Edge toEdge = graph.findEdge(closestTo);
 
-            start = fromEdge.getFrom();
-            destination = toEdge.getTo();
-        }
+        Node start = fromEdge.getFrom();
+        Node destination = toEdge.getTo();
 
         Route route = pathSearchAlgorithm.route(start, destination);
 

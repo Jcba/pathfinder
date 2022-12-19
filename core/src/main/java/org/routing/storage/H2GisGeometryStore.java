@@ -81,12 +81,14 @@ public class H2GisGeometryStore<T extends KeyProvider> implements GeometryStore<
 
     @Override
     public GeometryKeyReference findClosest(AbstractGeometry<?> geometry) {
+
         try (ResultSet resultSet = executeQuery(String.format("""
                         select key_id, st_distance(geom, ST_GeomFromGeoJson('%s')) as distance
                         from geometry_kv
+                        where geom && st_buffer(ST_GeomFromGeoJson('%s'), 0.01)
                         order by distance limit 1
-                        """,
-                objectMapper.writeValueAsString(geometry)))) {
+                        """, objectMapper.writeValueAsString(geometry), objectMapper.writeValueAsString(geometry)
+                ))) {
             resultSet.next();
             long keyId = resultSet.getLong("key_id");
             return new GeometryKeyReference("edge", keyId);
