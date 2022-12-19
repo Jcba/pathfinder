@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 import static java.nio.file.StandardOpenOption.READ;
 
@@ -23,20 +24,44 @@ public class OSMImporter implements GraphImporter {
 
     @Override
     public Graph importFromFile(Path filePath, Graph graph) {
-        InputStream pathInputStream = null;
+        Map<Long, Short> nodeDegreeMap = readNodeDegreeFromFile(filePath);
+        return readGraphFromFile(filePath, graph, nodeDegreeMap);
+    }
+
+    private Graph readGraphFromFile(Path filePath, Graph graph, Map<Long, Short> nodeDegreeMap) {
+        InputStream pathInputStream;
 
         try {
             pathInputStream = Files.newInputStream(filePath, READ);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try (BlockInputStream blockInputStream = new BlockInputStream(pathInputStream, new OSMParser(graph, edgeGeometryStore))) {
-            blockInputStream.process();
+            try (BlockInputStream blockInputStream = new BlockInputStream(pathInputStream,
+                    new OSMGraphParser(graph, edgeGeometryStore, nodeDegreeMap))) {
+                blockInputStream.process();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         return graph;
+    }
+
+    private Map<Long, Short> readNodeDegreeFromFile(Path filePath) {
+        InputStream pathInputStream;
+
+        OSMNodeDegreeParser osmNodeDegreeParser = new OSMNodeDegreeParser();
+
+        try {
+            pathInputStream = Files.newInputStream(filePath, READ);
+            try (BlockInputStream blockInputStream = new BlockInputStream(pathInputStream, osmNodeDegreeParser)) {
+                blockInputStream.process();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return osmNodeDegreeParser.getNodeDegreeMap();
     }
 }
