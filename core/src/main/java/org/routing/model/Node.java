@@ -46,12 +46,6 @@ public class Node implements Serializable, KeyProvider {
 
     @Override
     public int hashCode() {
-        if (getCoordinate() == null) {
-            return 0;
-        }
-        double lat = getCoordinate().getLat();
-        double lon = getCoordinate().getLon();
-
-        return (((int) (lat * 6)) << 8) + ((int) lon * 6);
+        return (int) id;
     }
 }
