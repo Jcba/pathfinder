@@ -43,10 +43,11 @@ public class RoutingConfiguration {
         return geometryStore;
     }
 
-    @Bean
+    @Bean(destroyMethod = "destroy")
     public Graph memoryGraph(GeometryStore<Edge> edgeGeometryStore) throws URISyntaxException {
         URL resource = getClass().getClassLoader().getResource("flevoland-latest.osm.pbf");
         Graph graph = new MemoryGraph();
+        // TODO: make this load optional - it is not needed if file is already read
         if (null != resource) {
             Path networkPath = Path.of(resource.toURI());
             OSMImporter osmImporter = new OSMImporter(edgeGeometryStore);

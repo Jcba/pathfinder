@@ -1,8 +1,8 @@
 package org.routing.web.adapters;
 
-import io.quarkus.test.Mock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.routing.geometries.Point;
 import org.routing.model.Edge;

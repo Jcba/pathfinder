@@ -59,19 +59,11 @@ public class Edge implements Serializable, KeyProvider {
 
         Edge edge = (Edge) o;
 
-        if (Double.compare(edge.getCost(), getCost()) != 0) return false;
-        if (getFrom() != null ? !getFrom().equals(edge.getFrom()) : edge.getFrom() != null) return false;
-        return getTo() != null ? getTo().equals(edge.getTo()) : edge.getTo() == null;
+        return getId() == edge.getId();
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = getFrom() != null ? getFrom().hashCode() : 0;
-        result = 31 * result + (getTo() != null ? getTo().hashCode() : 0);
-        temp = Double.doubleToLongBits(getCost());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
+        return (int) (getId() ^ (getId() >>> 32));
     }
 }

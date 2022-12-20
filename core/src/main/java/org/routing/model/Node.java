@@ -46,6 +46,6 @@ public class Node implements Serializable, KeyProvider {
 
     @Override
     public int hashCode() {
-        return (int) id;
+        return (int) (getId() ^ (getId() >>> 32));
     }
 }
