@@ -11,7 +11,7 @@
     <modules>
         <module>importer</module>
         <module>core</module>
-        <module>web</module>
+        <module>api</module>
         <module>simple-geometry</module>
     </modules>
     <dependencies>

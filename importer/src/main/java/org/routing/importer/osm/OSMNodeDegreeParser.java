@@ -12,17 +12,17 @@ public class OSMNodeDegreeParser extends AbstractOSMParser {
 
     @Override
     protected void parseRelations(List<Osmformat.Relation> list) {
-
+        // not needed
     }
 
     @Override
     protected void parseDense(Osmformat.DenseNodes denseNodes) {
-
+        // not needed
     }
 
     @Override
     protected void parseNodes(List<Osmformat.Node> list) {
-
+        // not needed
     }
 
     @Override
@@ -48,12 +48,12 @@ public class OSMNodeDegreeParser extends AbstractOSMParser {
 
     @Override
     protected void parse(Osmformat.HeaderBlock headerBlock) {
-
+        // not needed
     }
 
     @Override
     public void complete() {
-
+        // not needed
     }
 
     public Map<Long, Short> getNodeDegreeMap() {
