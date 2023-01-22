@@ -13,6 +13,7 @@
         <module>core</module>
         <module>api</module>
         <module>simple-geometry</module>
+        <module>cli</module>
     </modules>
     <dependencies>
         <dependency>

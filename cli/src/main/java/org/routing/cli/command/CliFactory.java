@@ -1,4 +1,4 @@
-package org.routing.web.cli;
+package org.routing.cli.command;
 
 public class CliFactory {
 

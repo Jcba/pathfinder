@@ -1,4 +1,4 @@
-package org.routing.web.cli;
+package org.routing.cli.command;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,5 +12,7 @@ public class ImportOsmCommand implements CliCommand {
     @Override
     public void execute(String[] commandOptions) {
         log.info("Starting OSM import with command options {}", Arrays.stream(commandOptions).toList());
+
+        // TODO: implement import osm command. If you wish to import osm data, use the web api instead
     }
 }

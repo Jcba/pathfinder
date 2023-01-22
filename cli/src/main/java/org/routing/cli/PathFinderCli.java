@@ -1,7 +1,7 @@
-package org.routing.web;
+package org.routing.cli;
 
-import org.routing.web.cli.CliCommand;
-import org.routing.web.cli.CliFactory;
+import org.routing.cli.command.CliCommand;
+import org.routing.cli.command.CliFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
