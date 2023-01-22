@@ -1,4 +1,4 @@
-package org.routing.model.serializer;
+package org.routing.storage.serializer;
 
 import org.jetbrains.annotations.NotNull;
 import org.mapdb.DataInput2;

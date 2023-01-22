@@ -10,7 +10,5 @@ public interface Graph {
 
     Edge getConnection(Node from, Node to);
 
-    Node getRandomNode();
-
     Edge findEdge(KeyProvider key);
 }

@@ -3,9 +3,9 @@ package org.routing.model;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.Serializer;
-import org.routing.model.serializer.EdgeArraySerializer;
-import org.routing.model.serializer.EdgeSerializer;
-import org.routing.model.serializer.NodeSerializer;
+import org.routing.storage.serializer.EdgeArraySerializer;
+import org.routing.storage.serializer.EdgeSerializer;
+import org.routing.storage.serializer.NodeSerializer;
 import org.routing.storage.KeyProvider;
 
 import java.util.*;
@@ -71,12 +71,6 @@ public class MemoryGraph implements Graph {
             }
         }
         return null;
-    }
-
-    public Node getRandomNode() {
-        Random r = new Random();
-        List<Node> nodeList = new ArrayList<>(adjacencyListMap.keySet());
-        return nodeList.get(r.nextInt(nodeList.size() / 10));
     }
 
     @Override
