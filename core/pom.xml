@@ -17,12 +17,14 @@
     </properties>
 
     <dependencies>
+        <!-- project dependencies -->
         <dependency>
             <groupId>org.routing</groupId>
             <artifactId>simple-geometry</artifactId>
             <scope>compile</scope>
         </dependency>
 
+        <!-- external dependencies -->
         <dependency>
             <groupId>org.orbisgis</groupId>
             <artifactId>h2gis</artifactId>
@@ -37,6 +39,7 @@
             <version>3.0.9</version>
         </dependency>
 
+        <!-- test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
