@@ -1,8 +1,11 @@
 package org.routing.cli.command;
 
+import org.routing.importer.GraphImporter;
+import org.routing.importer.osm.OSMQueuedImporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 
 public class ImportOsmCommand implements CliCommand {
@@ -13,6 +16,9 @@ public class ImportOsmCommand implements CliCommand {
     public void execute(String[] commandOptions) {
         log.info("Starting OSM import with command options {}", Arrays.stream(commandOptions).toList());
 
-        // TODO: implement import osm command. If you wish to import osm data, use the web api instead
+        String filename = commandOptions[1];
+
+        GraphImporter importer = new OSMQueuedImporter();
+        importer.importFromFile(Path.of(filename), null);
     }
 }

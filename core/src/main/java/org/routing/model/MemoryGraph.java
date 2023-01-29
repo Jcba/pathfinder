@@ -24,15 +24,17 @@ public class MemoryGraph implements Graph {
     }
 
     public MemoryGraph() {
-        db = DBMaker.fileDB("graph.db").make();
-        adjacencyListMap = db.hashMap("graphMap",
-                        new NodeSerializer(),
-                        new EdgeArraySerializer(new NodeSerializer()))
-                .createOrOpen();
-        edgeIdEdgeMap = db.hashMap("edgeIdMap",
-                        Serializer.LONG,
-                        new EdgeSerializer(new NodeSerializer()))
-                .createOrOpen();
+//        db = DBMaker.fileDB("graph.db").make();
+//        adjacencyListMap = db.hashMap("graphMap",
+//                        new NodeSerializer(),
+//                        new EdgeArraySerializer(new NodeSerializer()))
+//                .createOrOpen();
+//        edgeIdEdgeMap = db.hashMap("edgeIdMap",
+//                        Serializer.LONG,
+//                        new EdgeSerializer(new NodeSerializer()))
+//                .createOrOpen();
+        adjacencyListMap = new HashMap<>();
+        edgeIdEdgeMap = new HashMap<>();
     }
 
     public void destroy() {
