@@ -2,6 +2,11 @@ package org.routing.cli.command;
 
 import org.routing.importer.GraphImporter;
 import org.routing.importer.osm.OSMQueuedImporter;
+import org.routing.model.Edge;
+import org.routing.model.MemoryGraph;
+import org.routing.storage.DatabaseConfiguration;
+import org.routing.storage.GeometryStore;
+import org.routing.storage.H2GisGeometryStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +23,16 @@ public class ImportOsmCommand implements CliCommand {
 
         String filename = commandOptions[1];
 
-        GraphImporter importer = new OSMQueuedImporter();
-        importer.importFromFile(Path.of(filename), null);
+        DatabaseConfiguration databaseConfiguration = new DatabaseConfiguration(
+                "jdbc:h2:~/edges.db",
+                60,
+                true,
+                true
+        );
+
+        GeometryStore<Edge> edgeGeometryStore = new H2GisGeometryStore<>(databaseConfiguration);
+
+        GraphImporter importer = new OSMQueuedImporter(edgeGeometryStore);
+        importer.importFromFile(Path.of(filename), new MemoryGraph());
     }
 }
