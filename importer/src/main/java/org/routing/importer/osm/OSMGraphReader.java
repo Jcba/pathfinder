@@ -18,6 +18,7 @@ public class OSMGraphReader extends AbstractOSMParser {
     private final Graph graph;
     private long edgeIdSequence = 0;
 
+
     public OSMGraphReader(NodeStore nodeStore, Graph graph, GeometryStore<Edge> edgeGeometryStore) {
         this.nodeStore = nodeStore;
         this.edgeGeometryStore = edgeGeometryStore;
@@ -35,21 +36,22 @@ public class OSMGraphReader extends AbstractOSMParser {
         long prevId = 0;
         double prevLat = 0;
         double prevLon = 0;
+
+        List<NodeStore.Node> nodeList = new ArrayList<>();
+
         for (int i = 0; i < denseNodes.getIdList().size(); i++) {
             long id = denseNodes.getId(i) + prevId;
             double lat = (parseLat(denseNodes.getLat(i)) + prevLat);
             double lon = (parseLon(denseNodes.getLon(i)) + prevLon);
 
-            saveNode(id, lat, lon);
+            nodeList.add(new NodeStore.Node(id, (float) lat, (float) lon,0));
 
             prevId = id;
             prevLat = lat;
             prevLon = lon;
         }
-    }
 
-    private void saveNode(long nodeId, double lat, double lon) {
-        nodeStore.save(nodeId, lat, lon);
+        nodeStore.save(nodeList);
     }
 
     @Override
@@ -84,7 +86,7 @@ public class OSMGraphReader extends AbstractOSMParser {
         List<NodeStore.Node> nodesInEdge = new ArrayList<>();
 
         for (NodeStore.Node node : nodes) {
-            if (node.degree() > 1 && nodesInEdge.size() > 0) {
+            if (node.degree() > 0 && nodesInEdge.size() > 0) {
                 nodesInEdge.add(node);
                 saveEdge(nodesInEdge);
                 nodesInEdge = new ArrayList<>();
@@ -101,7 +103,7 @@ public class OSMGraphReader extends AbstractOSMParser {
         LineString lineString = new LineString(nodesInEdge.stream().map(n -> new Point(n.lat(), n.lon())).toList());
 
         Node nodeFrom = toNode(nodesInEdge.get(0));
-        Node nodeTo = toNode(nodesInEdge.get(nodesInEdge.size()-1));
+        Node nodeTo = toNode(nodesInEdge.get(nodesInEdge.size() - 1));
 
         Edge edge = new Edge(edgeIdSequence++, nodeFrom, nodeTo, lineString.getDistance());
 
@@ -116,6 +118,7 @@ public class OSMGraphReader extends AbstractOSMParser {
 
     @Override
     protected void parse(Osmformat.HeaderBlock headerBlock) {
+        System.out.println("reading file");
     }
 
     @Override

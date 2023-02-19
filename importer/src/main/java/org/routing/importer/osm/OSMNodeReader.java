@@ -60,5 +60,6 @@ public class OSMNodeReader extends AbstractOSMParser {
                 %n""");
         nodeStore.close();
     }
+    
 }
 

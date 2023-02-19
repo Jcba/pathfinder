@@ -31,9 +31,13 @@ public class OSMQueuedImporter implements GraphImporter {
 
     private void storeUsedNodes(Path filePath, NodeStore nodeStore) {
         try {
+            OSMNodeReader osmNodeReader = new OSMNodeReader(nodeStore);
+            long fileSizeInBytes = Files.size(filePath);
             InputStream pathInputStream = Files.newInputStream(filePath, READ);
-            try (BlockInputStream blockInputStream = new BlockInputStream(pathInputStream,
-                    new OSMNodeReader(nodeStore))) {
+            CountingInputStream countingInputStream = new CountingInputStream(pathInputStream, fileSizeInBytes);
+
+            try (BlockInputStream blockInputStream = new BlockInputStream(countingInputStream,
+                    osmNodeReader)) {
                 blockInputStream.process();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -45,8 +49,11 @@ public class OSMQueuedImporter implements GraphImporter {
 
     private void createGraph(Path filePath, Graph graph, NodeStore nodeStore) {
         try {
+            long fileSizeInBytes = Files.size(filePath);
             InputStream pathInputStream = Files.newInputStream(filePath, READ);
-            try (BlockInputStream blockInputStream = new BlockInputStream(pathInputStream,
+            CountingInputStream countingInputStream = new CountingInputStream(pathInputStream, fileSizeInBytes);
+
+            try (BlockInputStream blockInputStream = new BlockInputStream(countingInputStream,
                     new OSMGraphReader(nodeStore, graph, edgeGeometryStore))) {
                 blockInputStream.process();
             } catch (IOException e) {
