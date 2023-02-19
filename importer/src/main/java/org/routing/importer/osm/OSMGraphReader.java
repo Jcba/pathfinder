@@ -44,7 +44,7 @@ public class OSMGraphReader extends AbstractOSMParser {
             double lat = (parseLat(denseNodes.getLat(i)) + prevLat);
             double lon = (parseLon(denseNodes.getLon(i)) + prevLon);
 
-            nodeList.add(new NodeStore.Node(id, (float) lat, (float) lon,0));
+            nodeList.add(new NodeStore.Node(id, (float) lat, (float) lon, 0));
 
             prevId = id;
             prevLat = lat;
@@ -75,41 +75,54 @@ public class OSMGraphReader extends AbstractOSMParser {
 
                     prevNodeReference = nodeId;
                 }
-                splitAndSaveEdge(nodeIdList);
+                splitAndSaveEdge(nodeIdList, expandedWayKeyValues);
             }
         }
     }
 
-    private void splitAndSaveEdge(List<Long> nodeIdList) {
+    private void splitAndSaveEdge(List<Long> nodeIdList, Map<String, List<String>> expandedWayKeyValues) {
         List<NodeStore.Node> nodes = nodeStore.getAll(nodeIdList);
 
         List<NodeStore.Node> nodesInEdge = new ArrayList<>();
 
         for (NodeStore.Node node : nodes) {
-            if (node.degree() > 0 && nodesInEdge.size() > 0) {
+            if (node.degree() > 0 && nodesInEdge.size() > 1) {
                 nodesInEdge.add(node);
-                saveEdge(nodesInEdge);
+                saveEdge(nodesInEdge, expandedWayKeyValues);
                 nodesInEdge = new ArrayList<>();
             }
             nodesInEdge.add(node);
         }
 
         if (nodesInEdge.size() >= 2) {
-            saveEdge(nodesInEdge);
+            saveEdge(nodesInEdge, expandedWayKeyValues);
         }
     }
 
-    private void saveEdge(List<NodeStore.Node> nodesInEdge) {
+    private void saveEdge(List<NodeStore.Node> nodesInEdge, Map<String, List<String>> expandedWayKeyValues) {
         LineString lineString = new LineString(nodesInEdge.stream().map(n -> new Point(n.lat(), n.lon())).toList());
 
         Node nodeFrom = toNode(nodesInEdge.get(0));
         Node nodeTo = toNode(nodesInEdge.get(nodesInEdge.size() - 1));
 
         Edge edge = new Edge(edgeIdSequence++, nodeFrom, nodeTo, lineString.getDistance());
-
         edgeGeometryStore.save(edge, lineString);
-
         graph.addEdge(edge);
+
+        if (!isTrue(expandedWayKeyValues.get("oneway"))) {
+            Edge edgeBack = new Edge(edgeIdSequence++, nodeTo, nodeFrom, lineString.getDistance());
+            edgeGeometryStore.save(edgeBack, lineString);
+            graph.addEdge(edgeBack);
+        }
+    }
+
+    private boolean isTrue(List<String> values) {
+        if (null == values) {
+            return false;
+        }
+        return values.contains("yes") ||
+                values.contains("true") ||
+                values.contains("1");
     }
 
     private Node toNode(NodeStore.Node node) {

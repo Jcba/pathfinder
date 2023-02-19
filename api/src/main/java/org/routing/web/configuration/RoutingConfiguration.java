@@ -1,6 +1,8 @@
 package org.routing.web.configuration;
 
+import org.routing.importer.GraphImporter;
 import org.routing.importer.osm.OSMImporter;
+import org.routing.importer.osm.OSMQueuedImporter;
 import org.routing.model.Edge;
 import org.routing.model.Graph;
 import org.routing.model.MemoryGraph;
@@ -43,14 +45,14 @@ public class RoutingConfiguration {
         return geometryStore;
     }
 
-    @Bean(destroyMethod = "destroy")
+    @Bean
     public Graph memoryGraph(GeometryStore<Edge> edgeGeometryStore) throws URISyntaxException {
         URL resource = getClass().getClassLoader().getResource("flevoland-latest.osm.pbf");
         Graph graph = new MemoryGraph();
         // TODO: make this load optional - it is not needed if file is already read
         if (null != resource) {
             Path networkPath = Path.of(resource.toURI());
-            OSMImporter osmImporter = new OSMImporter(edgeGeometryStore);
+            GraphImporter osmImporter = new OSMQueuedImporter(edgeGeometryStore);
             osmImporter.importFromFile(networkPath, graph);
         }
         return graph;

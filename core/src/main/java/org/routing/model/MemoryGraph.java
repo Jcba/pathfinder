@@ -1,14 +1,11 @@
 package org.routing.model;
 
-import org.mapdb.DB;
-import org.mapdb.DBMaker;
-import org.mapdb.Serializer;
-import org.routing.storage.serializer.EdgeArraySerializer;
-import org.routing.storage.serializer.EdgeSerializer;
-import org.routing.storage.serializer.NodeSerializer;
 import org.routing.storage.KeyProvider;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 public class MemoryGraph implements Graph {
@@ -16,7 +13,6 @@ public class MemoryGraph implements Graph {
     private final Map<Node, Edge[]> adjacencyListMap;
     private final Map<Long, Edge> edgeIdEdgeMap;
 
-    private DB db;
 
     public MemoryGraph(ConcurrentMap<Node, Edge[]> adjacencyListMap) {
         this.adjacencyListMap = adjacencyListMap;
@@ -24,23 +20,8 @@ public class MemoryGraph implements Graph {
     }
 
     public MemoryGraph() {
-//        db = DBMaker.fileDB("graph.db").make();
-//        adjacencyListMap = db.hashMap("graphMap",
-//                        new NodeSerializer(),
-//                        new EdgeArraySerializer(new NodeSerializer()))
-//                .createOrOpen();
-//        edgeIdEdgeMap = db.hashMap("edgeIdMap",
-//                        Serializer.LONG,
-//                        new EdgeSerializer(new NodeSerializer()))
-//                .createOrOpen();
         adjacencyListMap = new HashMap<>();
         edgeIdEdgeMap = new HashMap<>();
-    }
-
-    public void destroy() {
-        if (null != db) {
-            db.close();
-        }
     }
 
     public void addEdge(Edge edge) {
