@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * Simple all-in-memory Graph implementation
+ */
 public class MemoryGraph implements Graph {
 
     private final Map<Node, Edge[]> adjacencyListMap;

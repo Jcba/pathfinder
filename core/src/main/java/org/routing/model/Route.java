@@ -4,10 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Route {
+
+    /**
+     * The route's total distance
+     */
     private double distance;
 
+    /**
+     * All intermediate nodes on the route
+     */
     private List<Node> nodesOnRoute;
 
+    /**
+     * A reference to the used graph to route this route
+     */
     private Graph graph;
 
     public double getDistance() {
