@@ -1,7 +1,7 @@
 package org.routing.cli.command;
 
 import org.routing.importer.GraphImporter;
-import org.routing.importer.osm.OSMQueuedImporter;
+import org.routing.importer.osm.OSMImporter;
 import org.routing.model.Edge;
 import org.routing.model.MemoryGraph;
 import org.routing.storage.DatabaseConfiguration;
@@ -32,7 +32,7 @@ public class ImportOsmCommand implements CliCommand {
 
         GeometryStore<Edge> edgeGeometryStore = new H2GisGeometryStore<>(databaseConfiguration);
 
-        GraphImporter importer = new OSMQueuedImporter(edgeGeometryStore);
+        GraphImporter importer = new OSMImporter(edgeGeometryStore);
         importer.importFromFile(Path.of(filename), new MemoryGraph());
     }
 }

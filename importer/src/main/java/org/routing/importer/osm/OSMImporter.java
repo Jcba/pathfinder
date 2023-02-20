@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
 
 import static java.nio.file.StandardOpenOption.READ;
 
@@ -23,18 +22,21 @@ public class OSMImporter implements GraphImporter {
     }
 
     @Override
-    public Graph importFromFile(Path filePath, Graph graph) {
-        Map<Long, Short> nodeDegreeMap = readNodeDegreeFromFile(filePath);
-        return readGraphFromFile(filePath, graph, nodeDegreeMap);
+    public void importFromFile(Path filePath, Graph graph) {
+        NodeStore nodeStore = new NodeStore();
+        storeUsedNodes(filePath, nodeStore);
+        createGraph(filePath, graph, nodeStore);
     }
 
-    private Graph readGraphFromFile(Path filePath, Graph graph, Map<Long, Short> nodeDegreeMap) {
-        InputStream pathInputStream;
-
+    private void storeUsedNodes(Path filePath, NodeStore nodeStore) {
         try {
-            pathInputStream = Files.newInputStream(filePath, READ);
-            try (BlockInputStream blockInputStream = new BlockInputStream(pathInputStream,
-                    new OSMGraphParser(graph, edgeGeometryStore, nodeDegreeMap))) {
+            OSMNodeReader osmNodeReader = new OSMNodeReader(nodeStore);
+            long fileSizeInBytes = Files.size(filePath);
+            InputStream pathInputStream = Files.newInputStream(filePath, READ);
+            CountingInputStream countingInputStream = new CountingInputStream(pathInputStream, fileSizeInBytes);
+
+            try (BlockInputStream blockInputStream = new BlockInputStream(countingInputStream,
+                    osmNodeReader)) {
                 blockInputStream.process();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -42,18 +44,16 @@ public class OSMImporter implements GraphImporter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        return graph;
     }
 
-    private Map<Long, Short> readNodeDegreeFromFile(Path filePath) {
-        InputStream pathInputStream;
-
-        OSMNodeDegreeParser osmNodeDegreeParser = new OSMNodeDegreeParser();
-
+    private void createGraph(Path filePath, Graph graph, NodeStore nodeStore) {
         try {
-            pathInputStream = Files.newInputStream(filePath, READ);
-            try (BlockInputStream blockInputStream = new BlockInputStream(pathInputStream, osmNodeDegreeParser)) {
+            long fileSizeInBytes = Files.size(filePath);
+            InputStream pathInputStream = Files.newInputStream(filePath, READ);
+            CountingInputStream countingInputStream = new CountingInputStream(pathInputStream, fileSizeInBytes);
+
+            try (BlockInputStream blockInputStream = new BlockInputStream(countingInputStream,
+                    new OSMGraphReader(nodeStore, graph, edgeGeometryStore))) {
                 blockInputStream.process();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -61,7 +61,5 @@ public class OSMImporter implements GraphImporter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        return osmNodeDegreeParser.getNodeDegreeMap();
     }
 }

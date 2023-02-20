@@ -2,7 +2,6 @@ package org.routing.web.configuration;
 
 import org.routing.importer.GraphImporter;
 import org.routing.importer.osm.OSMImporter;
-import org.routing.importer.osm.OSMQueuedImporter;
 import org.routing.model.Edge;
 import org.routing.model.Graph;
 import org.routing.model.MemoryGraph;
@@ -12,6 +11,7 @@ import org.routing.storage.DatabaseConfiguration;
 import org.routing.storage.GeometryLookup;
 import org.routing.storage.GeometryStore;
 import org.routing.storage.H2GisGeometryStore;
+import org.routing.web.model.NetworkLoader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +25,9 @@ public class RoutingConfiguration {
 
     @Value("${network.name}")
     private String network;
+
+    @Value("${network.load}")
+    private NetworkLoader networkLoader;
 
     private H2GisGeometryStore<Edge> geometryStore;
 
@@ -47,15 +50,17 @@ public class RoutingConfiguration {
 
     @Bean
     public Graph memoryGraph(GeometryStore<Edge> edgeGeometryStore) throws URISyntaxException {
-        URL resource = getClass().getClassLoader().getResource("flevoland-latest.osm.pbf");
-        Graph graph = new MemoryGraph();
-        // TODO: make this load optional - it is not needed if file is already read
-        if (null != resource) {
-            Path networkPath = Path.of(resource.toURI());
-            GraphImporter osmImporter = new OSMQueuedImporter(edgeGeometryStore);
-            osmImporter.importFromFile(networkPath, graph);
+        if (networkLoader == NetworkLoader.ON_STARTUP) {
+            URL resource = getClass().getClassLoader().getResource(network);
+            Graph graph = new MemoryGraph();
+            if (null != resource) {
+                Path networkPath = Path.of(resource.toURI());
+                GraphImporter osmImporter = new OSMImporter(edgeGeometryStore);
+                osmImporter.importFromFile(networkPath, graph);
+            }
+            return graph;
         }
-        return graph;
+        return new MemoryGraph();
     }
 
     @Bean
