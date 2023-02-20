@@ -3,10 +3,7 @@ package org.routing.importer.osm;
 import org.sqlite.SQLiteConfig;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class NodeStore {
 
@@ -99,6 +96,8 @@ public class NodeStore {
         }
         nodeIdStringList.deleteCharAt(nodeIdStringList.length() - 1);
 
+        Map<Long, Node> resultMap = new HashMap<>();
+
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(String.format(
                     "select id, lat, lon, degree from nodes where id in (%s)", nodeIdStringList));
@@ -107,10 +106,16 @@ public class NodeStore {
                 float lat = resultSet.getFloat("lat");
                 float lon = resultSet.getFloat("lon");
                 int degree = resultSet.getInt("degree");
-                result.add(new Node(id, lat, lon, degree));
+                resultMap.put(id, new Node(id, lat, lon, degree));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+
+        for (Long nodeId : nodeIdList) {
+            if (resultMap.containsKey(nodeId)) {
+                result.add(resultMap.get(nodeId));
+            }
         }
 
         return result;
