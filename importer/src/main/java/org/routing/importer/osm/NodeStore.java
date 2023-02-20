@@ -1,11 +1,15 @@
 package org.routing.importer.osm;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sqlite.SQLiteConfig;
 
 import java.sql.*;
 import java.util.*;
 
 public class NodeStore {
+
+    private final static Logger log = LoggerFactory.getLogger(NodeStore.class);
 
     private Connection connection;
 
@@ -29,7 +33,7 @@ public class NodeStore {
 
             connection.commit();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            log.error("Creating new NodeStore failed", e);
         }
     }
 
@@ -38,7 +42,7 @@ public class NodeStore {
             connection = DriverManager.getConnection("jdbc:sqlite:nodes.db", dbSettings().toProperties());
             connection.setAutoCommit(false);
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            log.error("Opening existing NodeStore failed", e);
         }
     }
 
@@ -59,8 +63,7 @@ public class NodeStore {
                 connection.close();
             }
         } catch (SQLException e) {
-            // connection close failed.
-            System.err.println(e.getMessage());
+            log.error("Closing NodeStore failed", e);
         }
     }
 

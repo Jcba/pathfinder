@@ -1,11 +1,15 @@
 package org.routing.importer.osm;
 
 import crosby.binary.Osmformat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
 
 public class OSMNodeReader extends AbstractOSMParser {
+
+    private final static Logger log = LoggerFactory.getLogger(OSMNodeReader.class);
 
     private final NodeStore nodeStore;
 
@@ -53,13 +57,13 @@ public class OSMNodeReader extends AbstractOSMParser {
 
     @Override
     public void complete() {
-        System.out.printf("""
+        log.info("""
                 ------------------------------------------------
                 Completed reading nodes from OSM PBF
                 ------------------------------------------------
                 %n""");
         nodeStore.close();
     }
-    
+
 }
 

@@ -23,10 +23,12 @@ public abstract class AbstractOSMParser extends BinaryParser {
         return result;
     }
 
+    //FIXME: make this configurable from a file or so
     protected boolean shouldParseWayType(Map<String, List<String>> expandedWayKeyVals) {
         return expandedWayKeyVals.containsKey("highway") && shouldParseHighWayType(expandedWayKeyVals.get("highway"));
     }
 
+    //FIXME: make this configurable from a file or so
     private boolean shouldParseHighWayType(List<String> highwayTypes) {
         return highwayTypes.contains("motorway") ||
                 highwayTypes.contains("trunk") ||

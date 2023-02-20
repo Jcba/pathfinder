@@ -33,9 +33,9 @@ public class OSMImporter implements GraphImporter {
             OSMNodeReader osmNodeReader = new OSMNodeReader(nodeStore);
             long fileSizeInBytes = Files.size(filePath);
             InputStream pathInputStream = Files.newInputStream(filePath, READ);
-            CountingInputStream countingInputStream = new CountingInputStream(pathInputStream, fileSizeInBytes);
+            ProgressLoggingInputStream progressLoggingInputStream = new ProgressLoggingInputStream(pathInputStream, fileSizeInBytes);
 
-            try (BlockInputStream blockInputStream = new BlockInputStream(countingInputStream,
+            try (BlockInputStream blockInputStream = new BlockInputStream(progressLoggingInputStream,
                     osmNodeReader)) {
                 blockInputStream.process();
             } catch (IOException e) {
@@ -50,9 +50,9 @@ public class OSMImporter implements GraphImporter {
         try {
             long fileSizeInBytes = Files.size(filePath);
             InputStream pathInputStream = Files.newInputStream(filePath, READ);
-            CountingInputStream countingInputStream = new CountingInputStream(pathInputStream, fileSizeInBytes);
+            ProgressLoggingInputStream progressLoggingInputStream = new ProgressLoggingInputStream(pathInputStream, fileSizeInBytes);
 
-            try (BlockInputStream blockInputStream = new BlockInputStream(countingInputStream,
+            try (BlockInputStream blockInputStream = new BlockInputStream(progressLoggingInputStream,
                     new OSMGraphReader(nodeStore, graph, edgeGeometryStore))) {
                 blockInputStream.process();
             } catch (IOException e) {

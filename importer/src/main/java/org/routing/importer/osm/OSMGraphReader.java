@@ -7,12 +7,16 @@ import org.routing.model.Edge;
 import org.routing.model.Graph;
 import org.routing.model.Node;
 import org.routing.storage.GeometryStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class OSMGraphReader extends AbstractOSMParser {
+
+    private final static Logger log = LoggerFactory.getLogger(OSMGraphReader.class);
     private final NodeStore nodeStore;
     private final GeometryStore<Edge> edgeGeometryStore;
     private final Graph graph;
@@ -131,12 +135,12 @@ public class OSMGraphReader extends AbstractOSMParser {
 
     @Override
     protected void parse(Osmformat.HeaderBlock headerBlock) {
-        System.out.println("reading file");
+        log.info("Start reading edges from OSM PBF file");
     }
 
     @Override
     public void complete() {
-        System.out.printf("""
+        log.info("""
                 ------------------------------------------------
                 Completed reading edges from OSM PBF
                 ------------------------------------------------

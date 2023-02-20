@@ -1,13 +1,18 @@
 package org.routing.importer.osm;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Decorating class which counts the number of bytes read from an input stream
+ * Decorating class which counts the number of bytes read from an input stream and logs the progress
  */
-public class CountingInputStream extends InputStream {
+public class ProgressLoggingInputStream extends InputStream {
+
+    private final static Logger log = LoggerFactory.getLogger(ProgressLoggingInputStream.class);
 
     private final InputStream inputStream;
     private final long fileSizeInBytes;
@@ -15,7 +20,7 @@ public class CountingInputStream extends InputStream {
     private int lastProgressDebugMsg = 0;
 
 
-    public CountingInputStream(InputStream inputStream, long fileSizeInBytes) {
+    public ProgressLoggingInputStream(InputStream inputStream, long fileSizeInBytes) {
         this.inputStream = inputStream;
         this.fileSizeInBytes = fileSizeInBytes;
     }
@@ -111,7 +116,7 @@ public class CountingInputStream extends InputStream {
         int progress = (int) ((readBytes * 100) / fileSizeInBytes);
 
         if (progress != lastProgressDebugMsg) {
-            System.out.printf("Read %s percent of file%n", progress);
+            log.info("Read {} percent of file%n", progress);
         }
 
         lastProgressDebugMsg = progress;
