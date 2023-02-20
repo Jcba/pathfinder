@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import static java.lang.Math.*;
 
+/**
+ * Point class. Jackson output marshals to a GeoJSON Point.
+ */
 public class Point extends AbstractGeometry<Double[]> {
 
     private final double lon;

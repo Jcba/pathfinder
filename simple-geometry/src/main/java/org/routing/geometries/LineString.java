@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * LineString class. Jackson output marshals to a GeoJSON LineString.
+ */
 public class LineString extends AbstractGeometry<Double[][]> {
 
     private Double[][] coordinates;

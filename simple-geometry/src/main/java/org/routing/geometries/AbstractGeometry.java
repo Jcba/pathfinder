@@ -1,7 +1,16 @@
 package org.routing.geometries;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+/**
+ * Geometry base class. Marshals to <a href="https://www.rfc-editor.org/rfc/rfc7946#section-3.1">GeoJSON geometries</a>
+ *
+ * @param <T> The backing coordinate type.
+ *            For example: Double[] for Points, Double[][] for LineStrings
+ */
 @JsonPropertyOrder({
         "type",
         "coordinates"
