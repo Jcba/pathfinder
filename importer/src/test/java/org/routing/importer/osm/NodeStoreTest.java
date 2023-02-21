@@ -29,9 +29,12 @@ class NodeStoreTest {
         NodeStore fixture = new NodeStore();
 
         fixture.saveId(1L);
+        fixture.update(1L, 1.0, 2.0);
 
         List<NodeStore.Node> all = fixture.getAll(List.of(1L));
 
         assertThat(all).extracting(NodeStore.Node::id).contains(1L);
+        assertThat(all).extracting(NodeStore.Node::lat).contains(1.0F);
+        assertThat(all).extracting(NodeStore.Node::lon).contains(2.0F);
     }
 }
