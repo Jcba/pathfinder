@@ -23,4 +23,15 @@ class NodeStoreTest {
 
         assertThat(all).extracting(NodeStore.Node::id).contains(1L);
     }
+
+    @Test
+    void updateNode_shouldBeInNodeStore() {
+        NodeStore fixture = new NodeStore();
+
+        fixture.saveId(1L);
+
+        List<NodeStore.Node> all = fixture.getAll(List.of(1L));
+
+        assertThat(all).extracting(NodeStore.Node::id).contains(1L);
+    }
 }

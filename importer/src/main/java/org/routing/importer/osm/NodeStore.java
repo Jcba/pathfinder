@@ -13,10 +13,16 @@ public class NodeStore {
     private static final String JDBC_URL = "jdbc:sqlite:nodes.db";
 
     private static final String SQL_INSERT_NODE_ID = "insert into nodes (id) values (?) on conflict(id) do update set degree=degree+1";
+    private static final String SQL_UPDATE_NODE = "update nodes set lat=?, lon=? where id=?";
 
     private Connection connection;
 
-    private final Map<String, PreparedStatement> preparedStatementMap = new HashMap<>();
+    private final Map<StatementType, PreparedStatement> preparedStatementMap = new HashMap<>();
+
+    enum StatementType {
+        INSERT_NODE_IDS,
+        UPDATE_NODE
+    }
 
     public NodeStore() {
         createNewStore();
@@ -58,8 +64,8 @@ public class NodeStore {
 
     private void setPreparedStatements() {
         try {
-            PreparedStatement statement = connection.prepareStatement(SQL_INSERT_NODE_ID);
-            preparedStatementMap.put("insert_node", statement);
+            preparedStatementMap.put(StatementType.INSERT_NODE_IDS, connection.prepareStatement(SQL_INSERT_NODE_ID));
+            preparedStatementMap.put(StatementType.UPDATE_NODE, connection.prepareStatement(SQL_UPDATE_NODE));
         } catch (SQLException e) {
             throw new ImportFailureException(e);
         }
@@ -91,7 +97,7 @@ public class NodeStore {
 
     public void saveId(long nodeId) {
         try {
-            PreparedStatement statement = preparedStatementMap.get("insert_node");
+            PreparedStatement statement = preparedStatementMap.get(StatementType.INSERT_NODE_IDS);
             statement.setLong(1, nodeId);
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -99,12 +105,13 @@ public class NodeStore {
         }
     }
 
-    public void save(long nodeId, double lat, double lon) {
-        // save to database
-        try (Statement statement = connection.createStatement()) {
-            String sql = String.format("update nodes set lat='%s', lon='%s' where id='%s'",
-                    lat, lon, nodeId);
-            statement.executeUpdate(sql);
+    public void update(long nodeId, double lat, double lon) {
+        try {
+            PreparedStatement statement = preparedStatementMap.get(StatementType.UPDATE_NODE);
+            statement.setDouble(1, lat);
+            statement.setDouble(2, lon);
+            statement.setDouble(3, nodeId);
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new ImportFailureException(e);
         }
@@ -171,7 +178,7 @@ public class NodeStore {
 
         for (Node node : nodeList) {
             if (existingNodeIds.contains(node.id)) {
-                save(node.id, node.lat, node.lon);
+                update(node.id, node.lat, node.lon);
             }
         }
     }
