@@ -43,7 +43,7 @@ public class OSMNodeReader extends AbstractOSMParser {
                 for (long ref : refsList) {
                     long nodeId = ref + prevNodeReference;
 
-                    nodeStore.save(nodeId);
+                    nodeStore.saveId(nodeId);
 
                     prevNodeReference = nodeId;
                 }

@@ -55,7 +55,7 @@ public class OSMGraphReader extends AbstractOSMParser {
             prevLon = lon;
         }
 
-        nodeStore.save(nodeList);
+        nodeStore.saveAll(nodeList);
     }
 
     @Override
