@@ -16,4 +16,4 @@ You will need an OSM region extract in PBF format.
 
 ## Why 
 
-Just because I can. It's written for fun. Plus I wanted to find out how hard it would be to write it from scratch.
+Just because I can. It's written for fun. 
