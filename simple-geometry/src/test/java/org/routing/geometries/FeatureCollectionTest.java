@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class FeatureCollectionTest {
 
     @Test
-    void serialized_shouldBeValidGeojson() throws JsonProcessingException {
+    void convertToGeoJson_shouldBeValidGeoJsonString() throws JsonProcessingException {
 
         FeatureCollection featureCollection = new FeatureCollection(List.of(
                 new Feature(

@@ -22,10 +22,12 @@ public class LineString extends AbstractGeometry<Double[][]> {
         type = "LineString";
     }
 
+    @Override
     public String getType() {
         return type;
     }
 
+    @Override
     public Double[][] getCoordinates() {
         return coordinates;
     }

@@ -1,6 +1,5 @@
 package org.routing.geometries;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import static java.lang.Math.*;
@@ -10,42 +9,42 @@ import static java.lang.Math.*;
  */
 public class Point extends AbstractGeometry<Double[]> {
 
-    private final double lon;
-    private final double lat;
+    private Double[] coordinates;
 
-    public Point(double lat, double lon) {
-        this.lat = lat;
-        this.lon = lon;
+    public Point() {
+        // default constructor
     }
 
-    @JsonGetter("type")
+    public Point(double lat, double lon) {
+        this.coordinates = new Double[]{lon, lat};
+    }
+
     public String getType() {
         return "Point";
     }
 
-    @JsonGetter("coordinates")
     public Double[] getCoordinates() {
-        return new Double[]{lon, lat};
+        return coordinates;
     }
 
     @JsonIgnore
     public double getLon() {
-        return lon;
+        return coordinates[0];
     }
 
     @JsonIgnore
     public double getLat() {
-        return lat;
+        return coordinates[1];
     }
 
     @JsonIgnore
     public float distance(Point other) {
         var earthRadius = 6371000.0; //meters
-        var dLat = Math.toRadians((other.lat - this.lat));
-        var dLng = Math.toRadians((other.lon - this.lon));
+        var dLat = Math.toRadians((other.getLat() - this.getLat()));
+        var dLng = Math.toRadians((other.getLon() - this.getLon()));
         var a = sin(dLat / 2) * sin(dLat / 2) +
-                cos(Math.toRadians(this.lat)) *
-                        cos(Math.toRadians(other.lat)) *
+                cos(Math.toRadians(this.getLat())) *
+                        cos(Math.toRadians(other.getLat())) *
                         sin(dLng / 2) * sin(dLng / 2);
         var c = 2 * atan2(sqrt(a), sqrt(1 - a));
         return (float) (earthRadius * c);

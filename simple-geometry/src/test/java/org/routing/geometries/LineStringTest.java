@@ -16,7 +16,7 @@ class LineStringTest {
     }
 
     @Test
-    void convertToGeojson_shouldBeValid() throws JsonProcessingException {
+    void convertToGeoJson_shouldBeValid() throws JsonProcessingException {
         List<Point> points = List.of(new Point(1.0, 1.0), new Point(2.0, 2.0));
         LineString lineString = new LineString(points);
 
@@ -36,7 +36,7 @@ class LineStringTest {
     }
 
     @Test
-    void geojsonStringToObject_shouldBeValid() throws JsonProcessingException {
+    void geoJsonStringToObject_shouldBeValid() throws JsonProcessingException {
         String geojsonLineString = """
                 {
                     "type": "LineString",
