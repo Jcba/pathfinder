@@ -9,7 +9,6 @@ import org.routing.model.Node;
 import org.routing.model.Route;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.routing.search.TestGraphs.createConnectedGraphWithDepth3;
@@ -20,7 +19,7 @@ class AStarPathSearchTest {
 
     @BeforeEach
     void setUp() {
-        MemoryGraph memoryGraph = new MemoryGraph(new ConcurrentHashMap<>());
+        MemoryGraph memoryGraph = new MemoryGraph();
 
         fixture = new AStarPathSearch(memoryGraph);
     }

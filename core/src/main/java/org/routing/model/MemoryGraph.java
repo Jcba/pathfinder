@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * Simple all-in-memory Graph implementation
@@ -16,11 +15,6 @@ public class MemoryGraph implements Graph {
     private final Map<Node, Edge[]> adjacencyListMap;
     private final Map<Long, Edge> edgeIdEdgeMap;
 
-
-    public MemoryGraph(ConcurrentMap<Node, Edge[]> adjacencyListMap) {
-        this.adjacencyListMap = adjacencyListMap;
-        this.edgeIdEdgeMap = new HashMap<>();
-    }
 
     public MemoryGraph() {
         adjacencyListMap = new HashMap<>();
