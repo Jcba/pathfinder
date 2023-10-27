@@ -116,7 +116,7 @@ public class ProgressLoggingInputStream extends InputStream {
         int progress = (int) ((readBytes * 100) / fileSizeInBytes);
 
         if (progress != lastProgressDebugMsg) {
-            log.info("Read {} percent of file%n", progress);
+            log.info("Read {} percent of file", progress);
         }
 
         lastProgressDebugMsg = progress;

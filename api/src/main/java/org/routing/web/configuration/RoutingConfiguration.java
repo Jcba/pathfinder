@@ -60,6 +60,9 @@ public class RoutingConfiguration {
             }
             return graph;
         }
+        if (networkLoader == NetworkLoader.PRE_LOADED) {
+            throw new UnsupportedOperationException();
+        }
         return new MemoryGraph();
     }
 
