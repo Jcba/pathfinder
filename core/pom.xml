@@ -15,7 +15,7 @@
         <!-- project dependencies -->
         <dependency>
             <groupId>org.routing</groupId>
-            <artifactId>simple-geometry</artifactId>
+            <artifactId>libgeo</artifactId>
             <scope>compile</scope>
         </dependency>
 

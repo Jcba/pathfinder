@@ -1,6 +1,6 @@
 package org.routing.search;
 
-import org.routing.geometries.Point;
+import org.routing.libgeo.geojson.Point;
 import org.routing.model.Edge;
 import org.routing.model.Graph;
 import org.routing.model.MemoryGraph;

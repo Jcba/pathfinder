@@ -1,6 +1,6 @@
 package org.routing.storage;
 
-import org.routing.geometries.AbstractGeometry;
+import org.routing.libgeo.geojson.AbstractGeometry;
 
 public interface GeometryLookup {
 

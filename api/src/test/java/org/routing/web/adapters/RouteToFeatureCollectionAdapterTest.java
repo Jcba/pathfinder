@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.routing.geometries.Point;
+import org.routing.libgeo.geojson.Point;
 import org.routing.model.Edge;
 import org.routing.model.Node;
 import org.routing.storage.GeometryStore;

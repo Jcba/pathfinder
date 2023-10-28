@@ -1,6 +1,6 @@
 package org.routing.model;
 
-import org.routing.geometries.Point;
+import org.routing.libgeo.geojson.Point;
 import org.routing.storage.KeyProvider;
 
 import java.io.Serializable;

@@ -1,8 +1,8 @@
 package org.routing.importer.osm;
 
 import crosby.binary.Osmformat;
-import org.routing.geometries.LineString;
-import org.routing.geometries.Point;
+import org.routing.libgeo.geojson.LineString;
+import org.routing.libgeo.geojson.Point;
 import org.routing.model.Edge;
 import org.routing.model.Graph;
 import org.routing.model.Node;

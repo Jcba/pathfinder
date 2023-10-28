@@ -2,9 +2,9 @@ package org.routing.storage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.routing.geometries.AbstractGeometry;
-import org.routing.geometries.LineString;
-import org.routing.geometries.Point;
+import org.routing.libgeo.geojson.AbstractGeometry;
+import org.routing.libgeo.geojson.LineString;
+import org.routing.libgeo.geojson.Point;
 import org.routing.model.Node;
 
 import java.util.List;

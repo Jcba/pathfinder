@@ -1,4 +1,4 @@
-package org.routing.geometries;
+package org.routing.libgeo.geojson;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

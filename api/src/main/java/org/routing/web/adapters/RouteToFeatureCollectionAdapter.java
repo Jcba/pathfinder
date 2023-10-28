@@ -1,8 +1,8 @@
 package org.routing.web.adapters;
 
-import org.routing.geometries.AbstractGeometry;
-import org.routing.geometries.Feature;
-import org.routing.geometries.FeatureCollection;
+import org.routing.libgeo.geojson.AbstractGeometry;
+import org.routing.libgeo.geojson.Feature;
+import org.routing.libgeo.geojson.FeatureCollection;
 import org.routing.model.Edge;
 import org.routing.model.Node;
 import org.routing.model.Route;

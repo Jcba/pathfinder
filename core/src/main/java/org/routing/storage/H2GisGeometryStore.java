@@ -2,7 +2,7 @@ package org.routing.storage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.routing.geometries.AbstractGeometry;
+import org.routing.libgeo.geojson.AbstractGeometry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

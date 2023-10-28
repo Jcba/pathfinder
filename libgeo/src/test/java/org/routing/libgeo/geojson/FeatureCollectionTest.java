@@ -1,4 +1,4 @@
-package org.routing.geometries;
+package org.routing.libgeo.geojson;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

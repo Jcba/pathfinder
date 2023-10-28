@@ -2,7 +2,7 @@ package org.routing.search;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.routing.geometries.Point;
+import org.routing.libgeo.geojson.Point;
 import org.routing.model.Graph;
 import org.routing.model.MemoryGraph;
 import org.routing.model.Node;

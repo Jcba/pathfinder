@@ -1,6 +1,6 @@
 package org.routing.search;
 
-import org.routing.geometries.Point;
+import org.routing.libgeo.geojson.Point;
 import org.routing.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

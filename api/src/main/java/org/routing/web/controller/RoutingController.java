@@ -1,7 +1,7 @@
 package org.routing.web.controller;
 
-import org.routing.geometries.FeatureCollection;
-import org.routing.geometries.Point;
+import org.routing.libgeo.geojson.FeatureCollection;
+import org.routing.libgeo.geojson.Point;
 import org.routing.model.Edge;
 import org.routing.model.Graph;
 import org.routing.model.Node;
