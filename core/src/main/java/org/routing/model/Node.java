@@ -1,6 +1,6 @@
 package org.routing.model;
 
-import org.routing.libgeo.geojson.GJPoint;
+import org.routing.libgeo.geometry.Point;
 import org.routing.storage.KeyProvider;
 
 import java.io.Serializable;
@@ -9,18 +9,18 @@ public class Node implements Serializable, KeyProvider {
 
     private final long id;
 
-    public Node(long id, GJPoint coordinate) {
+    public Node(long id, Point coordinate) {
         this.id = id;
         this.coordinate = coordinate;
     }
 
-    private GJPoint coordinate;
+    private Point coordinate;
 
-    public GJPoint getCoordinate() {
+    public Point getCoordinate() {
         return coordinate;
     }
 
-    public void setCoordinate(GJPoint coordinate) {
+    public void setCoordinate(Point coordinate) {
         this.coordinate = coordinate;
     }
 

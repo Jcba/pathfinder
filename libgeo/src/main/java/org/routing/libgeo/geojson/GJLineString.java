@@ -1,6 +1,7 @@
 package org.routing.libgeo.geojson;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.routing.libgeo.geometry.LineString;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +18,14 @@ public class GJLineString extends GJAbstractGeometry<Double[][]> {
         type = "LineString";
     }
 
+    public GJLineString(LineString lineString) {
+        type = "LineString";
+
+        this.coordinates = lineString.points().stream()
+                .map(p -> new Double[]{p.lat(), p.lon()})
+                .toArray(Double[][]::new);
+    }
+
     public GJLineString(List<GJPoint> GJPoints) {
         this.coordinates = GJPoints.stream().map(GJPoint::getCoordinates).toArray(Double[][]::new);
         type = "LineString";
@@ -24,7 +33,7 @@ public class GJLineString extends GJAbstractGeometry<Double[][]> {
 
     @Override
     public String getType() {
-        return type;
+        return "LineString";
     }
 
     @Override
@@ -35,19 +44,6 @@ public class GJLineString extends GJAbstractGeometry<Double[][]> {
     @JsonIgnore
     public List<GJPoint> getPoints() {
         return Arrays.stream(getCoordinates()).map(c -> new GJPoint(c[1], c[0])).toList();
-    }
-
-    @JsonIgnore
-    public double getDistance() {
-        double distance = 0;
-        List<GJPoint> GJPoints = getPoints();
-        if (GJPoints.size() < 2) {
-            return distance;
-        }
-        for (int i = 0; i < GJPoints.size() - 1; i++) {
-            distance += GJPoints.get(i).distance(GJPoints.get(i + 1));
-        }
-        return distance;
     }
 
     @Override

@@ -1,7 +1,10 @@
 package org.routing.search;
 
-import org.routing.libgeo.geojson.GJPoint;
-import org.routing.model.*;
+import org.routing.libgeo.geometry.Point;
+import org.routing.model.Edge;
+import org.routing.model.Graph;
+import org.routing.model.Node;
+import org.routing.model.Route;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,8 +80,8 @@ public class AStarPathSearch implements PathSearchAlgorithm {
             // log error
             return 0.0;
         }
-        GJPoint GJPointA = a.getCoordinate();
-        GJPoint GJPointB = b.getCoordinate();
-        return GJPointA.distance(GJPointB);
+        Point pointA = a.getCoordinate();
+        Point pointB = b.getCoordinate();
+        return pointA.distance(pointB);
     }
 }
