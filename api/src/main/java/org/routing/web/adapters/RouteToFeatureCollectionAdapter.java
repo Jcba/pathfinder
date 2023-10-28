@@ -1,8 +1,8 @@
 package org.routing.web.adapters;
 
-import org.routing.libgeo.geojson.AbstractGeometry;
-import org.routing.libgeo.geojson.Feature;
-import org.routing.libgeo.geojson.FeatureCollection;
+import org.routing.libgeo.geojson.GJAbstractGeometry;
+import org.routing.libgeo.geojson.GJFeature;
+import org.routing.libgeo.geojson.GJFeatureCollection;
 import org.routing.model.Edge;
 import org.routing.model.Node;
 import org.routing.model.Route;
@@ -14,7 +14,7 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.function.Function;
 
-public class RouteToFeatureCollectionAdapter implements Function<Route, FeatureCollection> {
+public class RouteToFeatureCollectionAdapter implements Function<Route, GJFeatureCollection> {
 
     private final GeometryStore<Edge> geometryLookup;
 
@@ -23,12 +23,12 @@ public class RouteToFeatureCollectionAdapter implements Function<Route, FeatureC
     }
 
     @Override
-    public FeatureCollection apply(Route route) {
+    public GJFeatureCollection apply(Route route) {
         List<Edge> edges = new ArrayList<>();
-        List<Feature> features = new ArrayList<>();
+        List<GJFeature> GJFeatures = new ArrayList<>();
 
         if (null == route) {
-            return new FeatureCollection(List.of());
+            return new GJFeatureCollection(List.of());
         }
 
         List<Node> nodesOnRoute = route.getNodesOnRoute();
@@ -37,11 +37,11 @@ public class RouteToFeatureCollectionAdapter implements Function<Route, FeatureC
         }
 
         for (Edge edge : edges) {
-            AbstractGeometry<?> edgeGeometry = geometryLookup.findById(edge);
-            Feature feature = new Feature(UUID.randomUUID().toString(), edgeGeometry, new Properties());
-            features.add(feature);
+            GJAbstractGeometry<?> edgeGeometry = geometryLookup.findById(edge);
+            GJFeature GJFeature = new GJFeature(UUID.randomUUID().toString(), edgeGeometry, new Properties());
+            GJFeatures.add(GJFeature);
         }
 
-        return new FeatureCollection(features);
+        return new GJFeatureCollection(GJFeatures);
     }
 }

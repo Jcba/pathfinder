@@ -2,7 +2,7 @@ package org.routing.importer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.routing.libgeo.geojson.Point;
+import org.routing.libgeo.geojson.GJPoint;
 import org.routing.importer.osm.OSMImporter;
 import org.routing.model.Edge;
 import org.routing.model.Graph;
@@ -26,7 +26,7 @@ class OSMImporterIT {
     @Test
     void readFlevoland() {
         Graph resultGraph = new MemoryGraph();
-        Point pointInFlevoland = new Point(52.347793, 5.267263);
+        GJPoint GJPointInFlevoland = new GJPoint(52.347793, 5.267263);
         String flevolandOSMFileName = "flevoland-latest.osm.pbf";
 
         Path flevoland = getPathFromResource(flevolandOSMFileName);
@@ -44,7 +44,7 @@ class OSMImporterIT {
         osmImporter.importFromFile(flevoland, resultGraph);
 
         // check result
-        GeometryKeyReference closestEdge = edgeGeometryStore.findClosest(pointInFlevoland);
+        GeometryKeyReference closestEdge = edgeGeometryStore.findClosest(GJPointInFlevoland);
 
         assertThat(resultGraph).isNotNull()
                 .extracting(g -> g.findEdge(closestEdge))

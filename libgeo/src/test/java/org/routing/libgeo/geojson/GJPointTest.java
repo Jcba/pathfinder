@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PointTest {
+class GJPointTest {
 
     @ParameterizedTest
     @CsvSource(textBlock = """
@@ -19,17 +19,17 @@ class PointTest {
             52.3572, 5.2561, 52.3662, 5.2474, 1200.0
             """)
     void distance_shouldBeCorrect(double lat1, double lon1, double lat2, double lon2, double distance) {
-        double result = new Point(lat1, lon1).distance(new Point(lat2, lon2));
+        double result = new GJPoint(lat1, lon1).distance(new GJPoint(lat2, lon2));
         assertThat(result).isCloseTo(distance, Percentage.withPercentage(5.0));
     }
 
     @Test
     void convertToGeoJson_shouldBeValid() throws JsonProcessingException {
-        Point point = new Point(1.0, 1.0);
+        GJPoint GJPoint = new GJPoint(1.0, 1.0);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        String result = objectMapper.writeValueAsString(point);
+        String result = objectMapper.writeValueAsString(GJPoint);
 
         assertThat(result).isEqualToIgnoringWhitespace("""
                 {
@@ -50,11 +50,11 @@ class PointTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        AbstractGeometry<?> result = objectMapper.readValue(geoJsonPoint, AbstractGeometry.class);
+        GJAbstractGeometry<?> result = objectMapper.readValue(geoJsonPoint, GJAbstractGeometry.class);
 
         assertThat(result)
-                .isInstanceOf(Point.class)
-                .extracting(AbstractGeometry::getCoordinates).isEqualTo(new Double[]{1.0, 1.0});
+                .isInstanceOf(GJPoint.class)
+                .extracting(GJAbstractGeometry::getCoordinates).isEqualTo(new Double[]{1.0, 1.0});
     }
 
 }

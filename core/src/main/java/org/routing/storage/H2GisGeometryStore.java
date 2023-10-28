@@ -2,7 +2,7 @@ package org.routing.storage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.routing.libgeo.geojson.AbstractGeometry;
+import org.routing.libgeo.geojson.GJAbstractGeometry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +59,7 @@ public class H2GisGeometryStore<T extends KeyProvider> implements GeometryStore<
     }
 
     @Override
-    public void save(T id, AbstractGeometry<?> geometry) {
+    public void save(T id, GJAbstractGeometry<?> geometry) {
         try {
             executeUpdate(String.format("insert into geometry_kv (key_id, geom) values ('%s', ST_GeomFromGeoJson('%s'));",
                     id.getId(), objectMapper.writeValueAsString(geometry)));
@@ -69,18 +69,18 @@ public class H2GisGeometryStore<T extends KeyProvider> implements GeometryStore<
     }
 
     @Override
-    public AbstractGeometry<?> findById(T id) {
+    public GJAbstractGeometry<?> findById(T id) {
         try (ResultSet resultSet = executeQuery(String.format("select ST_AsGeoJson(geom) geojson from geometry_kv where key_id = '%s'", id.getId()))) {
             resultSet.next();
             String geojson = resultSet.getString("geojson");
-            return objectMapper.readValue(geojson, AbstractGeometry.class);
+            return objectMapper.readValue(geojson, GJAbstractGeometry.class);
         } catch (SQLException | JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public GeometryKeyReference findClosest(AbstractGeometry<?> geometry) {
+    public GeometryKeyReference findClosest(GJAbstractGeometry<?> geometry) {
 
         try (ResultSet resultSet = executeQuery(String.format("""
                         select key_id, st_distance(geom, ST_GeomFromGeoJson('%s')) as distance

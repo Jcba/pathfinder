@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LineStringTest {
+class GJLineStringTest {
 
     @BeforeEach
     void setUp() {
@@ -17,12 +17,12 @@ class LineStringTest {
 
     @Test
     void convertToGeoJson_shouldBeValid() throws JsonProcessingException {
-        List<Point> points = List.of(new Point(1.0, 1.0), new Point(2.0, 2.0));
-        LineString lineString = new LineString(points);
+        List<GJPoint> GJPoints = List.of(new GJPoint(1.0, 1.0), new GJPoint(2.0, 2.0));
+        GJLineString GJLineString = new GJLineString(GJPoints);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        String result = objectMapper.writeValueAsString(lineString);
+        String result = objectMapper.writeValueAsString(GJLineString);
 
         assertThat(result).isEqualToIgnoringWhitespace("""
                 {
@@ -49,10 +49,10 @@ class LineStringTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        AbstractGeometry<?> result = objectMapper.readValue(geojsonLineString, AbstractGeometry.class);
+        GJAbstractGeometry<?> result = objectMapper.readValue(geojsonLineString, GJAbstractGeometry.class);
 
         assertThat(result)
-                .isInstanceOf(LineString.class)
-                .extracting(AbstractGeometry::getCoordinates).isEqualTo(new Double[][]{{1.0, 1.0}, {2.0, 2.0}});
+                .isInstanceOf(GJLineString.class)
+                .extracting(GJAbstractGeometry::getCoordinates).isEqualTo(new Double[][]{{1.0, 1.0}, {2.0, 2.0}});
     }
 }

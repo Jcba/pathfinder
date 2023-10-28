@@ -4,12 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.routing.libgeo.geojson.Point;
+import org.routing.libgeo.geojson.GJPoint;
 import org.routing.model.Edge;
 import org.routing.model.Node;
 import org.routing.storage.GeometryStore;
 
-class RouteToFeatureCollectionAdapterTest {
+class RouteToGJGJFeatureCollectionAdapterTest {
 
     private RouteToFeatureCollectionAdapter fixture;
 
@@ -24,8 +24,8 @@ class RouteToFeatureCollectionAdapterTest {
 
     @Test
     public void adaptRoute_shouldReturn() {
-        Node start = new Node(0, new Point(0.0f, 1.0f));
-        Node destination = new Node(1, new Point(5.0f, 5.0f));
+        Node start = new Node(0, new GJPoint(0.0f, 1.0f));
+        Node destination = new Node(1, new GJPoint(5.0f, 5.0f));
 //        Graph graph = TestGraphs.createConnectedGraphWithDepth3(start, destination);
 //
 //        AStarPathSearch search = new AStarPathSearch(graph);

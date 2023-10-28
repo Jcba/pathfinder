@@ -1,7 +1,7 @@
 package org.routing.web.controller;
 
-import org.routing.libgeo.geojson.FeatureCollection;
-import org.routing.libgeo.geojson.Point;
+import org.routing.libgeo.geojson.GJFeatureCollection;
+import org.routing.libgeo.geojson.GJPoint;
 import org.routing.model.Edge;
 import org.routing.model.Graph;
 import org.routing.model.Node;
@@ -38,13 +38,13 @@ public class RoutingController {
     }
 
     @GetMapping("")
-    public FeatureCollection route(@RequestParam("fromLat") Double fromLat,
-                                   @RequestParam("fromLon") Double fromLon,
-                                   @RequestParam("toLat") Double toLat,
-                                   @RequestParam("toLon") Double toLon) {
+    public GJFeatureCollection route(@RequestParam("fromLat") Double fromLat,
+                                     @RequestParam("fromLon") Double fromLon,
+                                     @RequestParam("toLat") Double toLat,
+                                     @RequestParam("toLon") Double toLon) {
 
-        GeometryKeyReference closestFrom = geometryLookup.findClosest(new Point(fromLat, fromLon));
-        GeometryKeyReference closestTo = geometryLookup.findClosest(new Point(toLat, toLon));
+        GeometryKeyReference closestFrom = geometryLookup.findClosest(new GJPoint(fromLat, fromLon));
+        GeometryKeyReference closestTo = geometryLookup.findClosest(new GJPoint(toLat, toLon));
 
         log.info("closest from: {}", closestFrom);
         log.info("closest to: {}", closestTo);

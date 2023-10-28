@@ -9,7 +9,7 @@ import java.util.Properties;
  * GeoJSON feature. See <a href="https://www.rfc-editor.org/rfc/rfc7946#section-3.2">GeoJSON Feature specification</a>
  *
  * @param id               Required, A unique id
- * @param abstractGeometry Required, a geometry
+ * @param GJAbstractGeometry Required, a geometry
  * @param properties       Required, additional properties
  */
 @JsonPropertyOrder({
@@ -17,8 +17,8 @@ import java.util.Properties;
         "properties",
         "geometry"
 })
-public record Feature(String id, @JsonGetter("geometry")
-AbstractGeometry<?> abstractGeometry, Properties properties) {
+public record GJFeature(String id, @JsonGetter("geometry")
+GJAbstractGeometry<?> GJAbstractGeometry, Properties properties) {
 
     @JsonGetter("type")
     String getType() {

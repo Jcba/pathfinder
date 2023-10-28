@@ -2,7 +2,7 @@ package org.routing.search;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.routing.libgeo.geojson.Point;
+import org.routing.libgeo.geojson.GJPoint;
 import org.routing.model.Graph;
 import org.routing.model.MemoryGraph;
 import org.routing.model.Node;
@@ -26,8 +26,8 @@ class AStarPathSearchTest {
 
     @Test
     void routeEmptyGraph_shouldReturnEmptyRoute() {
-        Node start = new Node(10, new Point(1.0f, 1.0f));
-        Node destination = new Node(11, new Point(2.0f, 2.0f));
+        Node start = new Node(10, new GJPoint(1.0f, 1.0f));
+        Node destination = new Node(11, new GJPoint(2.0f, 2.0f));
         Route route = fixture.route(start, destination);
 
         assertThat(route).isNull();
@@ -35,8 +35,8 @@ class AStarPathSearchTest {
 
     @Test
     void route_shouldVisitStartAndEndNode() {
-        Node start = new Node(10, new Point(0.0f, 1.0f));
-        Node destination = new Node(11, new Point(5.0f, 5.0f));
+        Node start = new Node(10, new GJPoint(0.0f, 1.0f));
+        Node destination = new Node(11, new GJPoint(5.0f, 5.0f));
         Graph memoryGraph = createConnectedGraphWithDepth3(start, destination);
         AStarPathSearch search = new AStarPathSearch(memoryGraph);
 

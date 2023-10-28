@@ -1,6 +1,6 @@
 package org.routing.storage;
 
-import org.routing.libgeo.geojson.AbstractGeometry;
+import org.routing.libgeo.geojson.GJAbstractGeometry;
 
 public interface GeometryLookup {
 
@@ -10,6 +10,6 @@ public interface GeometryLookup {
      * @param geometry the input geometry
      * @return the closest geometry of type T
      */
-    GeometryKeyReference findClosest(AbstractGeometry<?> geometry);
+    GeometryKeyReference findClosest(GJAbstractGeometry<?> geometry);
 
 }

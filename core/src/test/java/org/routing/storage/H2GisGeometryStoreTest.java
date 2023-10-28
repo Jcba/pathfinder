@@ -2,9 +2,9 @@ package org.routing.storage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.routing.libgeo.geojson.AbstractGeometry;
-import org.routing.libgeo.geojson.LineString;
-import org.routing.libgeo.geojson.Point;
+import org.routing.libgeo.geojson.GJAbstractGeometry;
+import org.routing.libgeo.geojson.GJLineString;
+import org.routing.libgeo.geojson.GJPoint;
 import org.routing.model.Node;
 
 import java.util.List;
@@ -28,13 +28,13 @@ class H2GisGeometryStoreTest {
 
     @Test
     void save_shouldSaveData() {
-        Node node = new Node(10, new Point(0.0, 1.0));
-        LineString lineString = new LineString(List.of(new Point(1.0, 1.0), new Point(2.0, 2.0)));
+        Node node = new Node(10, new GJPoint(0.0, 1.0));
+        GJLineString GJLineString = new GJLineString(List.of(new GJPoint(1.0, 1.0), new GJPoint(2.0, 2.0)));
 
-        fixture.save(node, lineString);
+        fixture.save(node, GJLineString);
 
-        AbstractGeometry<?> result = fixture.findById(node);
+        GJAbstractGeometry<?> result = fixture.findById(node);
 
-        assertThat(result).isEqualTo(lineString);
+        assertThat(result).isEqualTo(GJLineString);
     }
 }

@@ -9,27 +9,27 @@ import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FeatureCollectionTest {
+class GJGJFeatureCollectionTest {
 
     @Test
     void convertToGeoJson_shouldBeValidGeoJsonString() throws JsonProcessingException {
 
-        FeatureCollection featureCollection = new FeatureCollection(List.of(
-                new Feature(
+        GJFeatureCollection GJFeatureCollection = new GJFeatureCollection(List.of(
+                new GJFeature(
                         "0",
-                        new Point(0.0, 0.0),
+                        new GJPoint(0.0, 0.0),
                         new Properties()
                 )
         ));
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        String result = objectMapper.writeValueAsString(featureCollection);
+        String result = objectMapper.writeValueAsString(GJFeatureCollection);
 
         assertThat(result).isEqualToIgnoringWhitespace("""
                       {
                               "type": "FeatureCollection",
-                              "features": [{
+                              "GJFeatures": [{
                                   "type": "Feature",
                                   "properties": {},
                                   "geometry": {

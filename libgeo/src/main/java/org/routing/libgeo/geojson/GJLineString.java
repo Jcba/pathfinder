@@ -8,17 +8,17 @@ import java.util.List;
 /**
  * LineString class. Jackson output marshals to a GeoJSON LineString.
  */
-public class LineString extends AbstractGeometry<Double[][]> {
+public class GJLineString extends GJAbstractGeometry<Double[][]> {
 
     private Double[][] coordinates;
 
-    public LineString() {
+    public GJLineString() {
         // default constructor
         type = "LineString";
     }
 
-    public LineString(List<Point> points) {
-        this.coordinates = points.stream().map(Point::getCoordinates).toArray(Double[][]::new);
+    public GJLineString(List<GJPoint> GJPoints) {
+        this.coordinates = GJPoints.stream().map(GJPoint::getCoordinates).toArray(Double[][]::new);
         type = "LineString";
     }
 
@@ -33,19 +33,19 @@ public class LineString extends AbstractGeometry<Double[][]> {
     }
 
     @JsonIgnore
-    public List<Point> getPoints() {
-        return Arrays.stream(getCoordinates()).map(c -> new Point(c[1], c[0])).toList();
+    public List<GJPoint> getPoints() {
+        return Arrays.stream(getCoordinates()).map(c -> new GJPoint(c[1], c[0])).toList();
     }
 
     @JsonIgnore
     public double getDistance() {
         double distance = 0;
-        List<Point> points = getPoints();
-        if (points.size() < 2) {
+        List<GJPoint> GJPoints = getPoints();
+        if (GJPoints.size() < 2) {
             return distance;
         }
-        for (int i = 0; i < points.size() - 1; i++) {
-            distance += points.get(i).distance(points.get(i + 1));
+        for (int i = 0; i < GJPoints.size() - 1; i++) {
+            distance += GJPoints.get(i).distance(GJPoints.get(i + 1));
         }
         return distance;
     }
@@ -55,7 +55,7 @@ public class LineString extends AbstractGeometry<Double[][]> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        LineString that = (LineString) o;
+        GJLineString that = (GJLineString) o;
 
         return Arrays.deepEquals(getCoordinates(), that.getCoordinates());
     }

@@ -7,15 +7,15 @@ import static java.lang.Math.*;
 /**
  * Point class. Jackson output marshals to a GeoJSON Point.
  */
-public class Point extends AbstractGeometry<Double[]> {
+public class GJPoint extends GJAbstractGeometry<Double[]> {
 
     private Double[] coordinates;
 
-    public Point() {
+    public GJPoint() {
         // default constructor
     }
 
-    public Point(double lat, double lon) {
+    public GJPoint(double lat, double lon) {
         this.coordinates = new Double[]{lon, lat};
     }
 
@@ -38,7 +38,7 @@ public class Point extends AbstractGeometry<Double[]> {
     }
 
     @JsonIgnore
-    public float distance(Point other) {
+    public float distance(GJPoint other) {
         var earthRadius = 6371000.0; //meters
         var dLat = Math.toRadians((other.getLat() - this.getLat()));
         var dLng = Math.toRadians((other.getLon() - this.getLon()));

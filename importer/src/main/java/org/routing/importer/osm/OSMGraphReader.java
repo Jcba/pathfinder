@@ -1,8 +1,8 @@
 package org.routing.importer.osm;
 
 import crosby.binary.Osmformat;
-import org.routing.libgeo.geojson.LineString;
-import org.routing.libgeo.geojson.Point;
+import org.routing.libgeo.geojson.GJLineString;
+import org.routing.libgeo.geojson.GJPoint;
 import org.routing.model.Edge;
 import org.routing.model.Graph;
 import org.routing.model.Node;
@@ -104,18 +104,18 @@ public class OSMGraphReader extends AbstractOSMParser {
     }
 
     private void saveEdge(List<NodeStore.Node> nodesInEdge, Map<String, List<String>> expandedWayKeyValues) {
-        LineString lineString = new LineString(nodesInEdge.stream().map(n -> new Point(n.lat(), n.lon())).toList());
+        GJLineString GJLineString = new GJLineString(nodesInEdge.stream().map(n -> new GJPoint(n.lat(), n.lon())).toList());
 
         Node nodeFrom = toNode(nodesInEdge.get(0));
         Node nodeTo = toNode(nodesInEdge.get(nodesInEdge.size() - 1));
 
-        Edge edge = new Edge(edgeIdSequence++, nodeFrom, nodeTo, lineString.getDistance());
-        edgeGeometryStore.save(edge, lineString);
+        Edge edge = new Edge(edgeIdSequence++, nodeFrom, nodeTo, GJLineString.getDistance());
+        edgeGeometryStore.save(edge, GJLineString);
         graph.addEdge(edge);
 
         if (!isTrue(expandedWayKeyValues.get("oneway"))) {
-            Edge edgeBack = new Edge(edgeIdSequence++, nodeTo, nodeFrom, lineString.getDistance());
-            edgeGeometryStore.save(edgeBack, lineString);
+            Edge edgeBack = new Edge(edgeIdSequence++, nodeTo, nodeFrom, GJLineString.getDistance());
+            edgeGeometryStore.save(edgeBack, GJLineString);
             graph.addEdge(edgeBack);
         }
     }
@@ -130,7 +130,7 @@ public class OSMGraphReader extends AbstractOSMParser {
     }
 
     private Node toNode(NodeStore.Node node) {
-        return new Node(node.id(), new Point(node.lat(), node.lon()));
+        return new Node(node.id(), new GJPoint(node.lat(), node.lon()));
     }
 
     @Override

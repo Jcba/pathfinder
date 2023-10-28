@@ -17,10 +17,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 })
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", include = JsonTypeInfo.As.EXISTING_PROPERTY)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = LineString.class, name = "LineString"),
-        @JsonSubTypes.Type(value = Point.class, name = "Point")
+        @JsonSubTypes.Type(value = GJLineString.class, name = "LineString"),
+        @JsonSubTypes.Type(value = GJPoint.class, name = "Point")
 })
-public abstract class AbstractGeometry<T> {
+public abstract class GJAbstractGeometry<T> {
 
     protected String type;
 

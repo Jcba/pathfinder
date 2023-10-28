@@ -1,6 +1,6 @@
 # Pathfinder 
 
-Pathfinder finds the shortest route between two points. It reads OSM data and transforms this to a routable graph. 
+Pathfinder finds the shortest route between two GJPoints. It reads OSM data and transforms this to a routable graph. 
 The project aims to be simple and extendable.
 
 ## Usage
