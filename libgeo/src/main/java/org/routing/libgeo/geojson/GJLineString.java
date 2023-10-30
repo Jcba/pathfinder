@@ -1,6 +1,5 @@
 package org.routing.libgeo.geojson;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.routing.libgeo.geometry.LineString;
 
 import java.util.Arrays;
@@ -22,7 +21,7 @@ public class GJLineString extends GJAbstractGeometry<Double[][]> {
         type = "LineString";
 
         this.coordinates = lineString.points().stream()
-                .map(p -> new Double[]{p.lat(), p.lon()})
+                .map(p -> new Double[]{p.lon(), p.lat()})
                 .toArray(Double[][]::new);
     }
 
@@ -39,11 +38,6 @@ public class GJLineString extends GJAbstractGeometry<Double[][]> {
     @Override
     public Double[][] getCoordinates() {
         return coordinates;
-    }
-
-    @JsonIgnore
-    public List<GJPoint> getPoints() {
-        return Arrays.stream(getCoordinates()).map(c -> new GJPoint(c[1], c[0])).toList();
     }
 
     @Override

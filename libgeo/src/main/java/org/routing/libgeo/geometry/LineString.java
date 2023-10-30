@@ -5,11 +5,9 @@ import java.util.Objects;
 
 public final class LineString implements Geometry {
     private final List<Point> points;
-    private final Envelope envelope;
 
     public LineString(List<Point> points) {
         this.points = points;
-        envelope = calculateEnvelope();
     }
 
     public double getDistance() {
@@ -25,7 +23,7 @@ public final class LineString implements Geometry {
 
     @Override
     public Envelope getEnvelope() {
-        return envelope;
+        return calculateEnvelope();
     }
 
     private Envelope calculateEnvelope() {

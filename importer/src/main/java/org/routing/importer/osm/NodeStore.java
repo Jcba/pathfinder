@@ -4,14 +4,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sqlite.SQLiteConfig;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.*;
 import java.util.*;
 
 public class NodeStore {
 
-    private static final Logger log = LoggerFactory.getLogger(NodeStore.class);
-    private static final String JDBC_URL = "jdbc:sqlite:nodes.db";
+    private static Integer totalNumberOfNodeStores = 0;
 
+    private int nodeStoreNumber = 0;
+    private static final Logger log = LoggerFactory.getLogger(NodeStore.class);
+    private static final String JDBC_TEMPLATE_URL = "jdbc:sqlite:nodes_%d.db";
     private static final String SQL_INSERT_NODE_ID = "insert into nodes (id) values (?) on conflict(id) do update set degree=degree+1";
     private static final String SQL_UPDATE_NODE = "update nodes set lat=?, lon=? where id=?";
 
@@ -31,7 +36,8 @@ public class NodeStore {
     private void createNewStore() {
         try {
             // create a database connection
-            connection = DriverManager.getConnection(JDBC_URL, dbSettings().toProperties());
+
+            connection = DriverManager.getConnection(createNewJdbcConnectionString(), dbSettings().toProperties());
             connection.setAutoCommit(false);
 
             Statement statement = connection.createStatement();
@@ -51,9 +57,19 @@ public class NodeStore {
         }
     }
 
+    private String createNewJdbcConnectionString() {
+        this.nodeStoreNumber = totalNumberOfNodeStores++;
+        return getJdbcConnectionString();
+    }
+
+    private String getJdbcConnectionString() {
+        return String.format(JDBC_TEMPLATE_URL, nodeStoreNumber);
+    }
+
+
     public void open() {
         try {
-            connection = DriverManager.getConnection(JDBC_URL, dbSettings().toProperties());
+            connection = DriverManager.getConnection(getJdbcConnectionString(), dbSettings().toProperties());
             connection.setAutoCommit(false);
             setPreparedStatements();
         } catch (SQLException e) {
@@ -93,6 +109,13 @@ public class NodeStore {
         } catch (SQLException e) {
             log.error("Closing NodeStore failed", e);
         }
+    }
+
+    public void destroy() throws IOException {
+        close();
+        String[] splittedConnectionString = getJdbcConnectionString().split(":");
+        String fileName = splittedConnectionString[splittedConnectionString.length - 1];
+        Files.delete(Path.of(fileName));
     }
 
     public void saveId(long nodeId) {

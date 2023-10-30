@@ -6,7 +6,6 @@ import static java.lang.Math.*;
 
 public final class Point implements Geometry {
 
-    private final Envelope envelope;
     private final double lat;
     private final double lon;
 
@@ -14,7 +13,6 @@ public final class Point implements Geometry {
     public Point(double lat, double lon) {
         this.lat = lat;
         this.lon = lon;
-        envelope = calculateEnvelope();
     }
 
     public float distance(Point other) {
@@ -31,7 +29,7 @@ public final class Point implements Geometry {
 
     @Override
     public Envelope getEnvelope() {
-        return envelope;
+        return calculateEnvelope();
     }
 
     private Envelope calculateEnvelope() {
