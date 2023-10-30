@@ -1,6 +1,4 @@
 package org.routing.libgeo.geometry;
 
-public interface Geometry {
-
-    Envelope getEnvelope();
+public sealed interface Geometry permits LineString, Point {
 }

@@ -110,12 +110,12 @@ public class OSMGraphReader extends AbstractOSMParser {
         Node nodeFrom = toNode(nodesInEdge.get(0));
         Node nodeTo = toNode(nodesInEdge.get(nodesInEdge.size() - 1));
 
-        Edge edge = new Edge(edgeIdSequence++, nodeFrom, nodeTo, lineString.getDistance());
+        Edge edge = new Edge(edgeIdSequence++, nodeFrom, nodeTo, lineString.getLength());
         edgeGeometryStore.save(edge, new GJLineString(lineString));
         graph.addEdge(edge);
 
         if (!isTrue(expandedWayKeyValues.get("oneway"))) {
-            Edge edgeBack = new Edge(edgeIdSequence++, nodeTo, nodeFrom, lineString.getDistance());
+            Edge edgeBack = new Edge(edgeIdSequence++, nodeTo, nodeFrom, lineString.getLength());
             edgeGeometryStore.save(edgeBack, new GJLineString(lineString));
             graph.addEdge(edgeBack);
         }
